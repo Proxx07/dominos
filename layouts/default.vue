@@ -4,7 +4,7 @@ const testStore = useTestStore();
 
 <template>
 <div class="site-wrapper">
-  <header class="header header header header header header header header header header header header header header header header header header header header header header">
+  <header class="header">
     <navigation/>
     {{testStore.count}}
   </header>

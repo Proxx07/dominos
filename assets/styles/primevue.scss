@@ -1,0 +1,20 @@
+.p-button {
+  &-label {
+    font: var(--font-14-n);
+  }
+
+  &-secondary{
+    --p-button-secondary-background: var(--secondary-500);
+    --p-button-secondary-border-color: var(--secondary-500);
+    --p-button-secondary-color: var(--white);
+
+    --p-button-secondary-hover-background: var(--secondary-600);
+    --p-button-secondary-hover-border-color: var(--secondary-600);
+    --p-button-secondary-hover-color: var(--white);
+
+    --p-button-secondary-active-background: var(--secondary-700);
+    --p-button-secondary-active-border-color: var(--secondary-700);
+    --p-button-secondary-active-color: var(--white);
+
+  }
+}
