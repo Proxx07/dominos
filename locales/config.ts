@@ -1,10 +1,11 @@
-import {defineI18nConfig} from "#i18n";
-import {en, ru, uz} from './langs'
+import { en, ru, uz } from './langs';
+import { defineI18nConfig } from '#i18n';
+import { useLocale } from '@/composables/useLocale';
 
-const DEFAULT_LANG = 'ru';
+const { language, DEFAULT_LANGUAGE } = useLocale();
 
 export default defineI18nConfig(() => ({
-  locale: DEFAULT_LANG,
-  fallbackLocale: DEFAULT_LANG,
-  messages: {en, ru, uz},
+  locale: language.value,
+  fallbackLocale: DEFAULT_LANGUAGE,
+  messages: { en, ru, uz },
 }));

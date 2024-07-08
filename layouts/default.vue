@@ -1,26 +1,22 @@
 <script setup lang="ts">
-const testStore = useTestStore();
+
 </script>
 
 <template>
-<div class="site-wrapper">
-  <header class="header">
-    <navigation/>
-    {{testStore.count}}
-  </header>
+  <div class="site-wrapper">
+    <Header />
+    <main class="main">
+      <slot />
+    </main>
 
-  <main class="main">
-    <slot/>
-  </main>
-
-  <footer class="footer">
-    <h2>Footer</h2>
-  </footer>
-</div>
+    <footer class="footer">
+      <h2>Footer</h2>
+    </footer>
+  </div>
 </template>
 
 <style scoped>
-header, main, footer {
+main, footer {
   width: 100%;
   text-align: center;
   margin: .5rem 0;

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 const list = [
   {
-    name: "main",
-    link: "/"
+    name: 'main',
+    link: '/',
   },
 
   {
-    name: "about",
-    link: "/about"
-  }
-]
+    name: 'about',
+    link: '/about',
+  },
+];
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const list = [
     <ul>
       <li v-for="item in list" :key="item.link">
         <nuxt-link class="link" :to="item.link">
-          {{item.name}}
+          {{ item.name }}
         </nuxt-link>
       </li>
     </ul>
