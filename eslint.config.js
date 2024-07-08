@@ -1,9 +1,10 @@
-import antfu from '@antfu/eslint-config'
+import antfu from '@antfu/eslint-config';
 
 export default antfu(
   {
     rules: {
-      indent: ['error', 2],
+      'indent': ['error', 2],
+      'style/semi': ['error', 'always'],
     },
   },
   {
@@ -12,9 +13,8 @@ export default antfu(
         'error',
         { shallowOnly: true },
       ],
-
       'indent': ['error', 2],
     },
     ignores: ['node_modules', '*.d.ts'],
   },
-)
+);

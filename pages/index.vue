@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const testStore = useTestStore()
+const testStore = useTestStore();
 
-const check = ref(false)
+const check = ref(false);
 
-const selectVal = ref('')
+const selectVal = ref('');
 const cities = ref([
   { name: 'New York', code: 'NY' },
   { name: 'Rome', code: 'RM' },
@@ -15,7 +15,7 @@ const cities = ref([
   { name: 'London', code: 'LDN' },
   { name: 'Istanbul', code: 'IST' },
   { name: 'Paris', code: 'PRS' },
-])
+]);
 </script>
 
 <template>

@@ -1,6 +1,6 @@
-import type { PrimeVueConfiguration } from 'primevue/config'
-import { definePreset } from '@primeuix/styled'
-import Aura from '@primevue/themes/aura'
+import type { PrimeVueConfiguration } from 'primevue/config';
+import { definePreset } from '@primeuix/styled';
+import Aura from '@primevue/themes/aura';
 
 const customPreset = definePreset(Aura, {
   primitive: {
@@ -32,7 +32,7 @@ const customPreset = definePreset(Aura, {
       paddingY: '.8rem',
     },
   },
-})
+});
 
 export const options: PrimeVueConfiguration = {
   ripple: true,
@@ -43,4 +43,4 @@ export const options: PrimeVueConfiguration = {
       darkModeSelector: 'none',
     },
   },
-}
+};
