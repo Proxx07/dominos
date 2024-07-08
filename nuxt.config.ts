@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  compatibilityDate: "2024-07-03",
+  compatibilityDate: '2024-07-03',
 
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -20,19 +20,23 @@ export default defineNuxtConfig({
   ],
 
   primevue: {
+    autoImport: false,
     usePrimeVue: false,
+    components: {
+      include: ['Button', 'Select', 'Checkbox'],
+    },
   },
 
   pinia: {
-    storesDirs: ['./store/**']
+    storesDirs: ['./store/**'],
   },
 
   imports: {
-    dirs: ['store']
+    dirs: ['store'],
   },
 
   i18n: {
-    vueI18n: './locales/config.ts'
+    vueI18n: './locales/config.ts',
   },
 
-});
+})

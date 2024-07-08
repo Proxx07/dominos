@@ -1,6 +1,6 @@
-import type {PrimeVueConfiguration} from "primevue/config";
-import { definePreset } from "@primeuix/styled";
-import Aura from "@primevue/themes/aura";
+import type { PrimeVueConfiguration } from 'primevue/config'
+import { definePreset } from '@primeuix/styled'
+import Aura from '@primevue/themes/aura'
 
 const customPreset = definePreset(Aura, {
   primitive: {
@@ -10,11 +10,11 @@ const customPreset = definePreset(Aura, {
       sm: '.5rem',
       md: '.5rem',
       lg: '1rem',
-    }
+    },
   },
   semantic: {
     primary: {
-      50:  'var(--primary-50)',
+      50: 'var(--primary-50)',
       100: 'var(--primary-100)',
       200: 'var(--primary-200)',
       300: 'var(--primary-300)',
@@ -30,13 +30,13 @@ const customPreset = definePreset(Aura, {
     formField: {
       paddingX: '.5rem',
       paddingY: '.8rem',
-    }
+    },
   },
-});
-
+})
 
 export const options: PrimeVueConfiguration = {
   ripple: true,
+
   theme: {
     preset: customPreset,
     options: {

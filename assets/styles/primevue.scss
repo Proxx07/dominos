@@ -1,3 +1,4 @@
+/* Button */
 .p-button {
   &-label {
     font: var(--font-14-n);
@@ -15,6 +16,11 @@
     --p-button-secondary-active-background: var(--secondary-700);
     --p-button-secondary-active-border-color: var(--secondary-700);
     --p-button-secondary-active-color: var(--white);
-
   }
+}
+
+/* Checkbox */
+.p-checkbox {
+  --p-checkbox-width: 1.7rem;
+  --p-checkbox-height: 1.7rem;
 }

@@ -2,7 +2,6 @@
 
 @import "variables";
 @import "transitions";
-
 @import "primevue";
 
 * {
@@ -28,10 +27,16 @@ body {
   flex-direction: column;
 }
 
-h1 {
-  font-size: 3rem;
+::-webkit-scrollbar-track {
+  background-color: var(--secondary-50);
+  border-radius: var(--radius-m);
 }
 
-.button-text {
-  font: var(--font-14-n);
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-m);
+  background-color: var(--secondary-500);
 }
