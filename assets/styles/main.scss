@@ -22,9 +22,15 @@ body {
 .site-wrapper {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 1350px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 ::-webkit-scrollbar-track {

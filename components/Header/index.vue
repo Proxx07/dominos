@@ -1,41 +1,53 @@
 <script setup lang="ts">
 import logo from '@/assets/images/Logo.svg';
-import { useLocale } from '@/composables/useLocale';
+import { useNavigation } from '~/composables/useNavigation';
 
-const { language, options, setLocale } = useLocale();
+const { folders, NavigationPages } = useNavigation();
 
 const phoneNumber = 7717;
+const options = ref(['Ташкент']);
+const city = ref('Ташкент');
+const localePath = useLocalePath();
 </script>
 
 <template>
   <header class="header">
-    <NuxtLink to="/">
-      <img :src="logo" alt="Domino's">
-    </NuxtLink>
+    <div class="header__top container">
+      <NuxtLink :to="localePath('/')">
+        <img :src="logo" alt="Domino's">
+      </NuxtLink>
 
-    <div class="delivery-info">
-      30 минут доставка
+      <div class="delivery-info">
+        {{ $t("header.delivery") }}
+      </div>
+
+      <a :href="`tel:${phoneNumber}`" class="callback">
+        {{ phoneNumber }}
+      </a>
+
+      <div class="header-right">
+        <lang-switcher />
+        <Select v-model="city" :options="options" />
+        <Button :label="$t('header.login')" />
+      </div>
     </div>
 
-    <a :href="`tel:${phoneNumber}`" class="callback">
-      {{ phoneNumber }}
-    </a>
-
-    <div class="header-right">
-      <Select v-model="language" :options="options" option-label="name" option-value="value" @update:model-value="setLocale" />
+    <div class="header__menu container">
+      <navigation :folders="folders" :pages="NavigationPages" />
     </div>
   </header>
-  <navigation />
 </template>
 
-<style scoped>
-header {
-  width: 100%;
-  margin: .5rem 0;
-  border: 1px solid #000;
-  min-height: 10rem;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+<style scoped lang="scss">
+.header {
+  padding-top: 3.2rem;
+  padding-bottom: 3.2rem;
+  &__top {
+    width: 100%;
+    min-height: 10rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .delivery-info {
