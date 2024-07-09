@@ -16,7 +16,8 @@ html {
 }
 
 body {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  line-height: 1.2;
 }
 
 .site-wrapper {
@@ -33,6 +34,20 @@ body {
   padding-right: 1.5rem;
 }
 
+a[class] {
+  text-decoration: none;
+  color: var(--primary-500);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1, h2 {
+  font: var(--font-36-b);
+}
+
 ::-webkit-scrollbar-track {
   background-color: var(--secondary-50);
   border-radius: var(--radius-m);
@@ -45,4 +60,10 @@ body {
 ::-webkit-scrollbar-thumb {
   border-radius: var(--radius-m);
   background-color: var(--secondary-500);
+}
+
+html, body {
+ &::-webkit-scrollbar {
+   width: 5px;
+ }
 }

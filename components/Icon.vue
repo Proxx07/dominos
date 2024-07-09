@@ -1,11 +1,12 @@
 <script setup lang="ts">
 const props = defineProps<{
   icon: string
+  noFill?: boolean
 }>();
 </script>
 
 <template>
-  <span v-html="props.icon" />
+  <span :class="[noFill && 'no-fill']" v-html="props.icon" />
 </template>
 
 <style scoped lang="scss">
@@ -13,13 +14,14 @@ span {
   display: inline-block;
   font-size: 0;
 
-  :deep(svg path[stroke]) {
-    stroke: currentColor;
-  }
-
   &:not(.no-fill) {
-    :deep(svg path[fill]) {
-      fill: currentColor;
+    :deep(svg) {
+      path[fill] {
+        fill: currentColor;
+      }
+      path[stroke] {
+        stroke: currentColor;
+      }
     }
   }
 }

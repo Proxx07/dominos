@@ -24,3 +24,19 @@
   --p-checkbox-width: 1.7rem;
   --p-checkbox-height: 1.7rem;
 }
+
+/* Select */
+.p-select {
+  --p-select-dropdown-width: 3.5rem;
+  &-label {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+}
+
+.p-menubar {
+  --p-menubar-border-color: transparent;
+  --p-menubar-mobile-button-size: 3rem;
+  --p-icon-size: 2rem;
+  --p-menubar-padding: 0;
+}

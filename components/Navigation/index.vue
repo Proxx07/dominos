@@ -11,21 +11,22 @@ const localePath = useLocalePath();
 
 <template>
   <nav>
-    <ul>
-      <li v-for="item in folders" :key="item.link">
+    <Menubar :model="pages">
+      <template #item="{ item }">
         <nuxt-link class="link" :to="localePath(item.link)">
+          <icon v-if="item.icon" :icon="item.icon" no-fill />
           {{ $t(item.name) }}
         </nuxt-link>
-      </li>
-    </ul>
-
-    <ul v-if="pages && pages.length">
-      <li v-for="item in pages" :key="item.link">
+      </template>
+    </Menubar>
+    <Menubar :model="pages">
+      <template #item="{ item }">
         <nuxt-link class="link" :to="localePath(item.link)">
+          <icon v-if="item.icon" :icon="item.icon" no-fill />
           {{ $t(item.name) }}
         </nuxt-link>
-      </li>
-    </ul>
+      </template>
+    </Menubar>
   </nav>
 </template>
 
@@ -35,15 +36,11 @@ nav {
   grid-template-columns: 1fr 1fr;
   gap: .5rem;
 }
-ul {
-  display: flex;
-  flex-wrap: wrap;
+.link {
+  display: inline-flex;
+  padding: 1rem;
+  gap: .5rem;
+  font: var(--font-14-n);
   align-items: center;
-  list-style: none;
-  .link {
-    display: inline-block;
-    padding: 1rem;
-    font: var(--font-14-n);
-  }
 }
 </style>

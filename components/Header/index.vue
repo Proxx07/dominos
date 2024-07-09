@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import logo from '@/assets/images/Logo.svg';
+import { cart, logo, phone, timer } from '~/assets/images';
+
 import { useNavigation } from '~/composables/useNavigation';
 
-const { folders, NavigationPages } = useNavigation();
+const { NavigationPages } = useNavigation();
 
 const phoneNumber = 7717;
 const options = ref(['Ташкент']);
@@ -17,41 +18,71 @@ const localePath = useLocalePath();
         <img :src="logo" alt="Domino's">
       </NuxtLink>
 
-      <div class="delivery-info">
+      <div class="icon-text">
+        <icon :icon="timer" />
         {{ $t("header.delivery") }}
       </div>
 
-      <a :href="`tel:${phoneNumber}`" class="callback">
+      <a :href="`tel:${phoneNumber}`" class="icon-text">
+        <icon :icon="phone" />
         {{ phoneNumber }}
       </a>
 
       <div class="header-right">
         <lang-switcher />
         <Select v-model="city" :options="options" />
-        <Button :label="$t('header.login')" />
+        <Button :label="$t('header.login')" class="login" />
       </div>
     </div>
-
     <div class="header__menu container">
-      <navigation :folders="folders" :pages="NavigationPages" />
+      <navigation :folders="NavigationPages" :pages="NavigationPages" class="navigation" />
+      <Button icon="pi pi-shopping-cart" severity="secondary" class="cart-button" label="Корзина 0 сум">
+        <template #icon>
+          <icon :icon="cart" />
+        </template>
+      </Button>
     </div>
   </header>
 </template>
 
 <style scoped lang="scss">
 .header {
-  padding-top: 3.2rem;
-  padding-bottom: 3.2rem;
+  padding: 3.2rem 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+
   &__top {
     width: 100%;
-    min-height: 10rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    align-items: start;
+  }
+
+  &__menu {
+    display: flex;
+    .navigation {
+      flex-grow: 1;
+    }
+    .cart-button {
+      min-width: 13rem;
+    }
   }
 }
 
-.delivery-info {
+.icon-text {
   font: var(--font-24-b);
   color: var(--primary-500);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-right {
+  display: flex;
+  gap: .7rem;
+  .login {
+    min-width: 11rem;
+  }
 }
 </style>

@@ -1,4 +1,5 @@
 import type { INavigation } from '../types';
+import { fire, loyalty } from '~/assets/images';
 
 export const NavigationPages: INavigation[] = [
   {
@@ -14,10 +15,12 @@ export const NavigationPages: INavigation[] = [
   {
     name: 'menu.work',
     link: '/vacancies',
+    icon: fire,
   },
 
   {
     name: 'menu.loyalty',
     link: '/loyalty',
+    icon: loyalty,
   },
 ];
