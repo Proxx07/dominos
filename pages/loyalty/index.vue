@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <h1>{{ $t('menu.news') }}</h1>
+  <h1>{{ $t('menu.loyalty') }}</h1>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

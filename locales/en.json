@@ -1,4 +1,10 @@
 {
+  "menu": {
+    "promotes": "Promotions",
+    "news": "News",
+    "work" : "Vacancies in Domino's",
+    "loyalty": "Loyalty programm"
+  },
   "header": {
     "delivery": "Delivery in 30 minutes",
     "login": "Login"

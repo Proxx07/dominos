@@ -1,10 +1,9 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
-  <div class="wrapper">
-    <h1>About page {{ $t('title') }}</h1>
-  </div>
+  <h1>{{ $t('menu.work') }}</h1>
 </template>
 
 <style scoped>

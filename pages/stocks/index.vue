@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h1>Страница с акциями</h1>
+  <h1>{{ $t('menu.promotes') }}</h1>
 </template>
 
 <style scoped>

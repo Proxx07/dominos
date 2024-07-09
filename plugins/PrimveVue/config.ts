@@ -2,7 +2,7 @@ import type { PrimeVueConfiguration } from 'primevue/config';
 import { definePreset } from '@primeuix/styled';
 import Aura from '@primevue/themes/aura';
 
-const customPreset = definePreset(Aura, {
+export const customPreset = definePreset(Aura, {
   primitive: {
     borderRadius: {
       none: '0',
@@ -29,7 +29,7 @@ const customPreset = definePreset(Aura, {
 
     formField: {
       paddingX: '.5rem',
-      paddingY: '.8rem',
+      paddingY: '1.2rem',
     },
   },
 });
