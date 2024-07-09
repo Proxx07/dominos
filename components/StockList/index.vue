@@ -21,4 +21,9 @@ defineProps<{
 </template>
 
 <style scoped>
+.stocks-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
 </style>

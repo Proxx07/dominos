@@ -51,7 +51,8 @@ const localePath = useLocalePath();
   display: grid;
   grid-template-columns: 1fr;
   gap: 4rem;
-
+  background: var(--white);
+  margin-bottom: 1.5rem;
   &__top {
     width: 100%;
     display: grid;

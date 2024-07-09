@@ -29,6 +29,7 @@ defineProps<{
   border-radius: var(--radius-m);
   display: flex;
   gap: 1rem;
+  background: var(--white);
   .image {
     min-width: 12.6rem;
     height: 12.6rem;
@@ -40,10 +41,12 @@ defineProps<{
     }
   }
   .title {
-    font: var(--font-16-n)
+    font: var(--font-16-n);
   }
   .text {
-    font: var(--font-16-n)
+    font: var(--font-14-n);
+    color: var(--black);
+    opacity: 0.6;
   }
 }
 </style>
