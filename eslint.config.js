@@ -15,6 +15,6 @@ export default antfu(
       ],
       'indent': ['error', 2],
     },
-    ignores: ['node_modules', '*.d.ts'],
+    ignores: ['node_modules', '*.d.ts', '.nuxt', '.output'],
   },
 );
