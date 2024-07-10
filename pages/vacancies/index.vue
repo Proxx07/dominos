@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <h1>{{ $t('menu.work') }}</h1>
+  <div class="container">
+    <h1>{{ $t('menu.work') }}</h1>
+  </div>
 </template>
 
 <style scoped>

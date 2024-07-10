@@ -42,6 +42,7 @@ defineProps<{
   }
   .title {
     font: var(--font-16-n);
+    color: var(--accent-text);
   }
   .text {
     font: var(--font-14-n);

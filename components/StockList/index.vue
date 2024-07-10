@@ -11,6 +11,7 @@ defineProps<{
   <h2 v-if="title">
     {{ title }}
   </h2>
+
   <div class="stocks-list">
     <stock-list-item
       v-for="item in list"
@@ -21,6 +22,9 @@ defineProps<{
 </template>
 
 <style scoped>
+h2 {
+  margin-bottom: 1.5rem;
+}
 .stocks-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

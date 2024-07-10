@@ -5,17 +5,14 @@ const { mockData } = useStocks();
 </script>
 
 <template>
-  <div class="main-page-content">
-    <div class="slider">
-      <img src="@/assets/images/pictures/slider-image.jpg" alt="1">
-    </div>
+  <div class="page-content">
+    <main-slider />
 
-    <stock-list title="Акции дня" :list="mockData" />
+    <div class="container">
+      <stock-list title="Акции дня" :list="mockData" />
+    </div>
   </div>
 </template>
 
 <style scoped>
-img {
-  border-right: var(--radius-m);
-}
 </style>

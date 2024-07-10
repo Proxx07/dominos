@@ -23,10 +23,12 @@ const localePath = useLocalePath();
         {{ $t("header.delivery") }}
       </div>
 
-      <a :href="`tel:${phoneNumber}`" class="icon-text">
-        <icon :icon="phone" />
-        {{ phoneNumber }}
-      </a>
+      <div class="phone-wrapper">
+        <a :href="`tel:${phoneNumber}`" class="icon-text">
+          <icon :icon="phone" />
+          {{ phoneNumber }}
+        </a>
+      </div>
 
       <div class="header-right">
         <lang-switcher />
@@ -74,7 +76,7 @@ const localePath = useLocalePath();
 .icon-text {
   font: var(--font-24-b);
   color: var(--primary-500);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 1rem;
 }

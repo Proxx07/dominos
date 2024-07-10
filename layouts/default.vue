@@ -5,21 +5,23 @@
 <template>
   <div class="site-wrapper">
     <Header />
-    <main class="main container">
+
+    <main class="main" role="main">
       <slot />
     </main>
 
-    <footer class="footer container">
-      <h2>Footer</h2>
-    </footer>
+    <Footer />
   </div>
 </template>
 
 <style scoped>
 .main {
-  display: flex;
   flex-grow: 1;
-  align-items: flex-start;
-  justify-content: center;
+  min-height: 76rem;
+  padding-bottom: 10rem;
+  overflow-x: hidden;
+  @media all and (max-width: 1024px) {
+    padding-bottom: 5rem;
+  }
 }
 </style>

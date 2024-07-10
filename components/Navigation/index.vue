@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import type { INavigation } from '~/composables/useNavigation/types';
 
-defineProps<{
+const props = defineProps<{
   folders: INavigation[]
   pages?: INavigation[]
 }>();
 
 const localePath = useLocalePath();
+
+const fullWidth = computed(() => (!props.pages || !props.pages.length) || (!props.folders || !props.folders.length));
 </script>
 
 <template>
-  <nav>
-    <Menubar :model="pages">
+  <nav :class="[fullWidth && 'full-width']">
+    <Menubar v-if="folders.length" :model="folders">
       <template #item="{ item }">
         <nuxt-link class="link" :to="localePath(item.link)">
           <icon v-if="item.icon" :icon="item.icon" no-fill />
@@ -19,7 +21,8 @@ const localePath = useLocalePath();
         </nuxt-link>
       </template>
     </Menubar>
-    <Menubar :model="pages">
+
+    <Menubar v-if="pages && pages.length" :model="pages">
       <template #item="{ item }">
         <nuxt-link class="link" :to="localePath(item.link)">
           <icon v-if="item.icon" :icon="item.icon" no-fill />
@@ -35,6 +38,9 @@ nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: .5rem;
+  &.full-width {
+    grid-template-columns: 1fr;
+  }
 }
 .link {
   display: inline-flex;

@@ -25,6 +25,7 @@ body {
   display: flex;
   flex-direction: column;
   background: rgba(247, 252, 255, 1);
+  overflow-x: hidden;
 }
 
 .container {
@@ -33,6 +34,10 @@ body {
   margin: 0 auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.page-content {
+  width: 100%;
 }
 
 a[class] {
@@ -46,7 +51,8 @@ img {
 }
 
 h1, h2 {
-  font: var(--font-36-b);
+  font: var(--font-36-n);
+  color: var(--primary-500);
 }
 
 ::-webkit-scrollbar-track {
