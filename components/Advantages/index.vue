@@ -44,9 +44,6 @@ const advantages: IAdvantage[] = [
 </template>
 
 <style scoped lang="scss">
-.advantages {
-  border-bottom: 1px solid rgba(226, 226, 226, 1);
-}
 .list {
   margin: 0 auto;
   display: grid;

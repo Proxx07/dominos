@@ -4,3 +4,13 @@ export interface INavigation {
 
   icon?: string
 }
+
+export interface IFolder {
+  id: string
+  parentId: string
+  name: string
+  order: number
+  imageUrl: string
+  bigImageUrl: string
+  tgImage: string
+}

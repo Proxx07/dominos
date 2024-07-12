@@ -1,5 +1,6 @@
 import type { INavigation } from '../types';
 import { fire, loyalty } from '~/assets/images';
+import { click, oson, payme, uzcard, uzum, visa } from '~/assets/images/payment';
 
 export const NavigationPages: INavigation[] = [
   {
@@ -24,3 +25,5 @@ export const NavigationPages: INavigation[] = [
     icon: loyalty,
   },
 ];
+
+export const paymentSystemsList = [payme, uzum, oson, click, uzcard, visa];

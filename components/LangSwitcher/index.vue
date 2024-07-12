@@ -1,11 +1,14 @@
 <script setup lang="ts">
 const { locales, locale, setLocale } = useI18n();
+const menuStore = useMenuStore();
+
 const lang = computed({
   get() {
     return locale.value;
   },
   set(value: string) {
     setLocale(value);
+    menuStore.getShopData();
   },
 });
 </script>

@@ -1,4 +1,5 @@
 import logo from '../images/Logo.svg';
+import copyright from '../images/copyright.svg';
 import timer from '../images/icons/timer.svg?raw';
 import phone from '../images/icons/phone.svg?raw';
 import cart from '../images/icons/cart.svg?raw';
@@ -12,6 +13,7 @@ import advantage_5 from '../images/icons/advantage_5.svg?raw';
 
 export {
   logo,
+  copyright,
   timer,
   phone,
   cart,
