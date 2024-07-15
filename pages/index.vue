@@ -1,27 +1,42 @@
 <script setup lang="ts">
-import { useStocks } from '~/composables/useStocks';
+import { YandexMap, YandexMapDefaultSchemeLayer } from 'vue-yandex-maps';
+import { useMenu } from '~/composables/useMenu';
 
-const { mockData } = useStocks();
-const menuStore = useMenuStore();
+const { loginMockUser, getMenu, products, categories } = useMenu();
 
-menuStore.getShopData();
+await loginMockUser();
+await getMenu();
 </script>
 
 <template>
   <div class="page-content">
     <main-slider />
 
+    <client-only>
+      <YandexMap
+        v-if="false"
+        :settings="{
+          location: {
+            center: [69.279723, 41.311344],
+            zoom: 10,
+          },
+        }"
+        width="100%"
+        height="500px"
+      >
+        <YandexMapDefaultSchemeLayer />
+      </YandexMap>
+    </client-only>
+
+    <pre>
+      {{ products }}
+    </pre>
+    <hr>
+    <pre>
+      {{ categories }}
+    </pre>
     <div class="container">
-      <pre>
-categories: {{ menuStore.folders.categories }}
-       </pre>
-      <hr>
-      <pre>
-products: {{ menuStore.folders.products }}
-       </pre>
-    </div>
-    <div class="container">
-      <stock-list title="Акции дня" :list="mockData" />
+      <stock-list title="Акции дня" :list="[]" />
     </div>
 
     <div class="container">
@@ -37,4 +52,7 @@ products: {{ menuStore.folders.products }}
 </template>
 
 <style scoped>
+.container pre {
+  font-size: 1rem;
+}
 </style>

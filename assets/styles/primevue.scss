@@ -40,3 +40,23 @@
   --p-icon-size: 2rem;
   --p-menubar-padding: 0;
 }
+
+
+/* Toast */
+.p-toast {
+  --p-toast-width: 30rem;
+  &-summary {
+    --p-toast-summary-font-size: 1.8rem;
+  }
+  &-message-icon {
+    --p-toast-icon-size: 2rem;
+  }
+  &-detail {
+    --p-toast-detail-font-size: 1.3rem;
+  }
+
+  &-close-button {
+    outline: none;
+    border: 0;
+  }
+}

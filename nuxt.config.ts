@@ -20,7 +20,12 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@pinia/nuxt',
     '@primevue/nuxt-module',
+    'vue-yandex-maps/nuxt',
   ],
+
+  yandexMaps: {
+    apikey: 'd1683129-041e-4b66-b5e3-8dea8e6cb4c2',
+  },
 
   primevue: {
     autoImport: false,
@@ -62,5 +67,4 @@ export default defineNuxtConfig({
       },
     ],
   },
-
 });
