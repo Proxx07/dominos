@@ -18,12 +18,12 @@ const $request = $fetch.create({
       };
     }
 
+    const headers = context.options.headers && { ...context.options.headers };
     context.options.headers = {
+      ...(headers && headers),
       ...(token.value && { Authorization: `Bearer ${token.value}` }),
       'Content-type': 'application/json',
     };
-
-    console.log(context);
   },
 
   onResponseError(context) {

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useNavigation } from '~/composables/useNavigation';
 import { paymentSystemsList } from '~/composables/useNavigation/models';
 import { copyright } from '~/assets/images';
 
-const { NavigationPages } = useNavigation();
+const menuStore = useMenuStore();
 </script>
 
 <template>
@@ -12,7 +11,7 @@ const { NavigationPages } = useNavigation();
 
     <footer class="footer">
       <div class="container">
-        <navigation :folders="[...NavigationPages, ...NavigationPages]" />
+        <navigation :folders="menuStore.mainFolders" />
       </div>
 
       <div class="info-part">

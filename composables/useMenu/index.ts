@@ -1,40 +1,36 @@
-import type { ICategory, IMenuQuery, IMenuResponse, IProduct } from './types';
-import { setMenuQuery } from './models';
-import $request from '~/api';
+import { useMenuStore } from '~/store/menu';
+import { useLocationStorage } from '~/composables/useLocationStorage';
 
 export function useMenu() {
-  const cookie = useCookie('token');
+  const menuStore = useMenuStore();
 
-  const query = ref<IMenuQuery>(setMenuQuery());
+  const { storage: location } = useLocationStorage();
+  const query = computed(() => ({ ...location.value }));
 
-  const categories = ref<ICategory[]>([]);
-  const products = ref<IProduct[]>([]);
+  let timeout: NodeJS.Timer;
 
-  const loginMockUser = async () => {
-    if (!window) {
-      cookie.value = '';
-      const result = await $request<{ token: string }>('/api/account/token', {
-        method: 'POST',
-        body: {
-          userName: 'admin',
-          password: 'P@ssw0rd',
-        },
-      });
-      cookie.value = result.token;
-    }
+  const getMenuByLocation = async () => {
+    const result = await $fetch('/api/menu', { query: query.value });
+
+    console.log(result);
   };
 
-  const getMenu = async () => {
-    const { data: result } = await useAsyncData('menu', () => $request<IMenuResponse>('/api/menu', { query: query.value }));
-    categories.value = result.value?.categories ?? [];
-    products.value = result.value?.products ?? [];
+  const mapMoveHandler = (longLat: [number, number]) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      location.value.Longitude = longLat[0];
+      location.value.Latitude = longLat[1];
+    }, 600);
   };
 
   return {
-    getMenu,
-    categories,
-    products,
+    location,
+    query,
 
-    loginMockUser,
+    mapMoveHandler,
+
+    menuStore,
+    getMenuByLocation,
   };
 }

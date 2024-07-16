@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { YandexMap, YandexMapDefaultSchemeLayer } from 'vue-yandex-maps';
+import { YandexMap, YandexMapDefaultSchemeLayer, YandexMapListener } from 'vue-yandex-maps';
+import { LongLat } from '~/composables/useShopData/models';
 import { useMenu } from '~/composables/useMenu';
 
-const { loginMockUser, getMenu, products, categories } = useMenu();
+const menuStore = useMenuStore();
 
-await loginMockUser();
-await getMenu();
+const { mapMoveHandler } = useMenu();
+
+useSeoMeta({
+  title: () => menuStore.currentFolderName,
+  description: () => menuStore.currentFolderName,
+});
 </script>
 
 <template>
@@ -17,7 +22,7 @@ await getMenu();
         v-if="false"
         :settings="{
           location: {
-            center: [69.279723, 41.311344],
+            center: LongLat,
             zoom: 10,
           },
         }"
@@ -25,16 +30,19 @@ await getMenu();
         height="500px"
       >
         <YandexMapDefaultSchemeLayer />
+        <YandexMapListener
+          :settings="{
+            onUpdate: (e) => mapMoveHandler([e.location.center[0], e.location.center[1]]),
+          }"
+        />
       </YandexMap>
     </client-only>
 
-    <pre>
-      {{ products }}
-    </pre>
     <hr>
     <pre>
-      {{ categories }}
+      {{ menuStore.productList }}
     </pre>
+
     <div class="container">
       <stock-list title="Акции дня" :list="[]" />
     </div>

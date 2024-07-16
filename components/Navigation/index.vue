@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { INavigation } from '~/composables/useNavigation/types';
+import type { ICategory } from '~/composables/useShopData/types';
 
 const props = defineProps<{
-  folders: INavigation[]
+  folders: ICategory[]
   pages?: INavigation[]
 }>();
 
 const localePath = useLocalePath();
-
 const fullWidth = computed(() => (!props.pages || !props.pages.length) || (!props.folders || !props.folders.length));
 </script>
 
@@ -15,9 +15,8 @@ const fullWidth = computed(() => (!props.pages || !props.pages.length) || (!prop
   <nav :class="[fullWidth && 'full-width']">
     <Menubar v-if="folders.length" :model="folders">
       <template #item="{ item }">
-        <nuxt-link class="link" :to="localePath(item.link)">
-          <icon v-if="item.icon" :icon="item.icon" no-fill />
-          {{ $t(item.name) }}
+        <nuxt-link class="link" :to="{ path: '/', query: { folder: item.id } }">
+          {{ item.name }}
         </nuxt-link>
       </template>
     </Menubar>
