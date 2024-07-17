@@ -60,3 +60,13 @@
     border: 0;
   }
 }
+
+/* ToggleButton */
+.p-togglebutton {
+  font-size: 1.6rem;
+  flex-grow: 1;
+  --p-togglebutton-padding: 1.4rem 1.5rem 1.3rem;
+  --p-togglebutton-checked-color: var(--primary-500);
+  --p-togglebutton-hover-color: var(--primary-500);
+  --p-togglebutton-font-weight: bold;
+}

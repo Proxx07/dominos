@@ -1,16 +1,31 @@
 <script setup lang="ts">
-import { YandexMap, YandexMapDefaultSchemeLayer, YandexMapListener } from 'vue-yandex-maps';
-import { LongLat } from '~/composables/useShopData/models';
 import { useMenu } from '~/composables/useMenu';
+import { useRestaurants } from '~/composables/useRestaurants';
+import type { IMarker } from '~/composables/useRestaurants/types';
 
 const menuStore = useMenuStore();
 
-const { mapMoveHandler } = useMenu();
+const { mapMoveHandler, query } = useMenu();
+const { markers, getRestaurants } = useRestaurants();
+
+function markerClickHandler(marker: IMarker) {
+  console.log(marker);
+}
 
 useSeoMeta({
   title: () => menuStore.currentFolderName,
   description: () => menuStore.currentFolderName,
 });
+
+onMounted(() => {
+  getRestaurants();
+});
+
+const delivery = ref(0);
+const deliveryTypes = ref([
+  { name: 'Доставка', value: 0 },
+  { name: 'Самовывоз', value: 1 },
+]);
 </script>
 
 <template>
@@ -18,24 +33,48 @@ useSeoMeta({
     <main-slider />
 
     <client-only>
-      <YandexMap
-        v-if="false"
-        :settings="{
-          location: {
-            center: LongLat,
-            zoom: 10,
-          },
-        }"
-        width="100%"
-        height="500px"
-      >
-        <YandexMapDefaultSchemeLayer />
-        <YandexMapListener
-          :settings="{
-            onUpdate: (e) => mapMoveHandler([e.location.center[0], e.location.center[1]]),
-          }"
-        />
-      </YandexMap>
+      <div class="address-selection">
+        <div class="delivery-types">
+          <select-button
+            v-model="delivery"
+            :options="deliveryTypes"
+            option-label="name"
+            option-value="value"
+            aria-labelledby="basic"
+            class="delivery-select"
+            :allow-empty="false"
+          />
+
+          <Transition name="slideX">
+            <div v-if="delivery === 1" class="self-delivery">
+              <h3>
+                Откуда заберете заказ?
+              </h3>
+
+              <div>
+                Выберите пункт выдачи на карте или используйте поиск
+              </div>
+            </div>
+          </Transition>
+
+          <Transition name="slideX">
+            <div v-if="delivery === 0" class="delivery">
+              <h3>
+                Укажите ваш адрес
+              </h3>
+            </div>
+          </Transition>
+        </div>
+        <map-component :markers="markers" :center-fixed-marker="delivery === 0" @on-move="mapMoveHandler" @marker-click="markerClickHandler" />
+      </div>
+    </client-only>
+
+    <client-only>
+      <pre>
+        {{ markers }}
+        <hr>
+        {{ query }}
+      </pre>
     </client-only>
 
     <hr>
@@ -60,6 +99,22 @@ useSeoMeta({
 </template>
 
 <style scoped>
+.delivery-types {
+  position: relative;
+  overflow: hidden;
+}
+.delivery-select {
+  width: 100%;
+}
+
+.address-selection {
+  width: 100%;
+  max-width: 128rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.6rem;
+}
 .container pre {
   font-size: 1rem;
 }

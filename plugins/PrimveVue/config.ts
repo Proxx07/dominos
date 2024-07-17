@@ -36,7 +36,6 @@ export const customPreset = definePreset(Aura, {
 
 export const options: PrimeVueConfiguration = {
   ripple: true,
-
   theme: {
     preset: customPreset,
     options: {

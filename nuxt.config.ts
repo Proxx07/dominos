@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import process from 'node:process';
 import { DEFAULT_LANGUAGE } from './utils/constatns';
 import { options } from './plugins/PrimveVue/config';
 
@@ -7,7 +8,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-07-03',
 
   app: {
-    pageTransition: { name: 'page', mode: 'out-in' },
+    pageTransition: { name: 'fade-slow', mode: 'out-in' },
   },
 
   css: [
@@ -23,8 +24,15 @@ export default defineNuxtConfig({
     'vue-yandex-maps/nuxt',
   ],
 
+  runtimeConfig: {
+    public: {
+      API_URL: process.env.API_BASE_URL,
+      MAP_SUGGEST_KEY: process.env.MAPS_SEARCH_API_KEY,
+    },
+  },
+
   yandexMaps: {
-    apikey: 'd1683129-041e-4b66-b5e3-8dea8e6cb4c2',
+    apikey: process.env.MAPS_API_KEY,
   },
 
   primevue: {
