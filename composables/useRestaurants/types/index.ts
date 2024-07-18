@@ -16,4 +16,5 @@ export interface IMarker {
   title: string
   iconSrc: string
   regionID?: number
+  address?: string
 }

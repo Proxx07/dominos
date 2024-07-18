@@ -1,5 +1,5 @@
-import { type LangTypes, ln } from '~/utils/constatns';
 import { useToastStore } from '~/store/toasts';
+import type { LangTypes } from '~/utils/constatns';
 
 const API_URL = 'https://cc.dominos.com.uz';
 
@@ -8,15 +8,14 @@ const $request = $fetch.create({
 
   onRequest(context) {
     const token = useCookie('token');
-    const { locale } = useI18n();
+    const locale = useCookie('lang');
 
-    if (context.options.query) {
-      const query = { ...context.options.query };
-      context.options.query = {
-        ...query,
-        Language: ln[(locale.value ?? 'ru') as LangTypes],
-      };
-    }
+    const query = context.options.query ? context.options.query : {};
+
+    context.options.query = {
+      Language: ln[(locale?.value ?? 'ru') as LangTypes],
+      ...query,
+    };
 
     const headers = context.options.headers && { ...context.options.headers };
     context.options.headers = {

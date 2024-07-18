@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { useMenu } from '~/composables/useMenu';
 import { useRestaurants } from '~/composables/useRestaurants';
-import type { IMarker } from '~/composables/useRestaurants/types';
 
 const menuStore = useMenuStore();
 
-const { mapMoveHandler, query } = useMenu();
-const { markers, getRestaurants } = useRestaurants();
+const {
+  deliveryList, activeDelivery, localAddresses,
+  mapMoveHandler, markerClickHandler,
+  addressMatchHandler, handleLocationSubmit,
+} = useMenu();
 
-function markerClickHandler(marker: IMarker) {
-  console.log(marker);
-}
+const { markers, filteredMarkers, markerQuery, getRestaurants } = useRestaurants();
+
+const mapHeight = 500;
 
 useSeoMeta({
   title: () => menuStore.currentFolderName,
@@ -20,12 +22,6 @@ useSeoMeta({
 onMounted(() => {
   getRestaurants();
 });
-
-const delivery = ref(0);
-const deliveryTypes = ref([
-  { name: 'Доставка', value: 0 },
-  { name: 'Самовывоз', value: 1 },
-]);
 </script>
 
 <template>
@@ -33,54 +29,63 @@ const deliveryTypes = ref([
     <main-slider />
 
     <client-only>
-      <div class="address-selection">
+      <div class="address-selection" :style="{ '--height': `${mapHeight}px` }">
         <div class="delivery-types">
           <select-button
-            v-model="delivery"
-            :options="deliveryTypes"
+            v-model="activeDelivery"
+            :options="deliveryList"
             option-label="name"
             option-value="value"
             aria-labelledby="basic"
-            class="delivery-select"
+            fluid
             :allow-empty="false"
           />
 
-          <Transition name="slideX">
-            <div v-if="delivery === 1" class="self-delivery">
-              <h3>
-                Откуда заберете заказ?
-              </h3>
-
-              <div>
-                Выберите пункт выдачи на карте или используйте поиск
+          <div class="delivery-body">
+            <Transition name="slideX">
+              <div v-if="activeDelivery === 0" class="delivery-item">
+                <list-with-search
+                  v-model:search="markerQuery"
+                  title="Укажите ваш адрес"
+                  search-placeholder="Поиск"
+                  :list="localAddresses"
+                  title-key="title"
+                  subtitle-key="address"
+                />
               </div>
-            </div>
-          </Transition>
+            </Transition>
 
-          <Transition name="slideX">
-            <div v-if="delivery === 0" class="delivery">
-              <h3>
-                Укажите ваш адрес
-              </h3>
-            </div>
-          </Transition>
+            <Transition name="slideX">
+              <div v-if="activeDelivery === 1" class="delivery-item">
+                <list-with-search
+                  v-model:search="markerQuery"
+                  title="Откуда заберете заказ?"
+                  subtitle="Выберите пункт выдачи на карте или используйте поиск"
+                  search-placeholder="Поиск"
+                  :list="filteredMarkers"
+                  title-key="title"
+                  subtitle-key="address"
+                  @list-item-clicked="markerClickHandler"
+                />
+              </div>
+            </Transition>
+          </div>
+
+          <Button fluid class="font-20-n" style="min-height: 46px" @click="handleLocationSubmit">
+            Подтвердить
+          </Button>
         </div>
-        <map-component :markers="markers" :center-fixed-marker="delivery === 0" @on-move="mapMoveHandler" @marker-click="markerClickHandler" />
+        <map-component
+          :markers="markers"
+          :center-fixed-marker="activeDelivery === 0"
+          :height="mapHeight"
+          @on-move="mapMoveHandler"
+          @marker-click="markerClickHandler"
+          @map-address-match="addressMatchHandler"
+          @address-match-error="addressMatchHandler"
+        />
       </div>
     </client-only>
-
-    <client-only>
-      <pre>
-        {{ markers }}
-        <hr>
-        {{ query }}
-      </pre>
-    </client-only>
-
-    <hr>
-    <pre>
-      {{ menuStore.productList }}
-    </pre>
 
     <div class="container">
       <stock-list title="Акции дня" :list="[]" />
@@ -98,13 +103,33 @@ const deliveryTypes = ref([
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .delivery-types {
   position: relative;
   overflow: hidden;
-}
-.delivery-select {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-height: var(--height);
+
+  .delivery-body {
+    position: relative;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .delivery-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    :deep(.search-field) {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  }
 }
 
 .address-selection {
@@ -114,8 +139,13 @@ const deliveryTypes = ref([
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.6rem;
-}
-.container pre {
-  font-size: 1rem;
+  max-height: calc(var(--height) + 2.2rem + 2.2rem);
+  background: var(--white);
+  padding: 2.2rem;
+  .address-item {
+    border-bottom: 1px solid var(--accent-text);
+    box-shadow: none;
+    border-radius: 0;
+  }
 }
 </style>

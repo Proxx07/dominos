@@ -17,13 +17,22 @@ export function useRestaurants() {
       coordinates: [item.longitude, item.latitude],
       title: item.name,
       iconSrc: markerIcon,
+      address: item.address,
       regionID: item.regionId,
     };
   }));
 
+  const markerQuery = ref<string>('');
+
+  const filteredMarkers = computed<IMarker[]>(() => {
+    return markers.value.filter(mark => (mark.title.toLowerCase().includes(markerQuery.value.toLowerCase()) || mark.address?.toLowerCase().includes(markerQuery.value.toLowerCase())));
+  });
+
   return {
     restaurantsList,
     markers,
+    markerQuery,
+    filteredMarkers,
     getRestaurants,
   };
 }

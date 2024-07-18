@@ -26,7 +26,6 @@ export const customPreset = definePreset(Aura, {
       900: 'var(--primary-900)',
       950: 'var(--primary-950)',
     },
-
     formField: {
       paddingX: '.5rem',
       paddingY: '1rem',

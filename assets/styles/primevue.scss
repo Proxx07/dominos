@@ -46,7 +46,8 @@
 .p-toast {
   --p-toast-width: 30rem;
   &-summary {
-    --p-toast-summary-font-size: 1.8rem;
+    --p-toast-summary-font-size: 1.5rem;
+    --p-toast-summary-font-weight: bold;
   }
   &-message-icon {
     --p-toast-icon-size: 2rem;
@@ -69,4 +70,33 @@
   --p-togglebutton-checked-color: var(--primary-500);
   --p-togglebutton-hover-color: var(--primary-500);
   --p-togglebutton-font-weight: bold;
+}
+
+/* Card */
+.p-card {
+  --p-card-border-radius: var(--radius-m);
+  --p-card-color: var(--primary-500);
+  --p-content-color: var(--accent-text);
+
+  &.secondary {
+    --p-card-background: var(--primary-50);
+    --p-card-color: var(--accent-text);
+    --p-content-color: var(--primary-500);
+  }
+
+  &.transparent {
+    --p-card-body-padding: 0;
+    --p-card-background: transparent;
+    --p-card-shadow: none;
+  }
+
+
+  .p-card-title {
+    font: var(--font-16-b);
+  }
+
+  .p-card-content {
+    color: var(--p-content-color);
+    font: var(--font-14-n);
+  }
 }

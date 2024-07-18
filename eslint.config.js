@@ -5,6 +5,8 @@ export default antfu(
     rules: {
       'indent': ['error', 2],
       'style/semi': ['error', 'always'],
+      'antfu/if-newline': 'off',
+      'antfu/consistent-list-newline': 'off',
     },
   },
   {

@@ -2,9 +2,9 @@ import { useToast } from 'primevue/usetoast';
 
 export const useToastStore = defineStore('toasts', () => {
   const $toast = useToast();
-  const duration = 3500;
+  const duration = 3000;
 
-  const success = (title: string, text: string) => {
+  const success = (title: string, text?: string) => {
     $toast.add({
       severity: 'success',
       summary: title,
@@ -13,7 +13,7 @@ export const useToastStore = defineStore('toasts', () => {
     });
   };
 
-  const info = (title: string, text: string) => {
+  const info = (title: string, text?: string) => {
     $toast.add({
       severity: 'info',
       summary: title,
@@ -22,7 +22,7 @@ export const useToastStore = defineStore('toasts', () => {
     });
   };
 
-  const warning = (title: string, text: string) => {
+  const warning = (title: string, text?: string) => {
     $toast.add({
       severity: 'warn',
       summary: title,
@@ -31,7 +31,7 @@ export const useToastStore = defineStore('toasts', () => {
     });
   };
 
-  const error = (title: string, text: string) => {
+  const error = (title: string, text?: string) => {
     $toast.add({
       severity: 'error',
       summary: title,

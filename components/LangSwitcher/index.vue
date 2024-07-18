@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { locales, locale, setLocale } = useI18n();
+const ln = useCookie('lang');
 
 const lang = computed({
   get() {
@@ -8,6 +9,7 @@ const lang = computed({
 
   set: async (value: string) => {
     await setLocale(value);
+    ln.value = value;
     document.location.reload();
   },
 });

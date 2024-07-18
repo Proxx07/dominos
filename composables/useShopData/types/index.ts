@@ -56,6 +56,8 @@ export interface IMenuResponse {
   deliveryDuration: number
   categories: ICategory[]
   products: IProduct[]
+
+  error?: string
 }
 
 export interface IMenuQuery {
