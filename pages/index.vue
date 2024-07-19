@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { useMenu } from '~/composables/useMenu';
-import { useRestaurants } from '~/composables/useRestaurants';
 
 const menuStore = useMenuStore();
-
+const mapHeight = 500;
 const {
-  deliveryList, activeDelivery, localAddresses,
-  mapMoveHandler, markerClickHandler,
-  addressMatchHandler, handleLocationSubmit,
+  location, addressList, setAddress,
+  mapCoords, markerCenterCoords, currentMarker, restMarksList, getRestaurants, setMapCoords,
+  activeDelivery, deliveryList, addressSelectHandle, submitMapHandler,
 } = useMenu();
 
-const { markers, filteredMarkers, markerQuery, getRestaurants } = useRestaurants();
-
-const mapHeight = 500;
+function errorHandle(e) {
+  console.log(e);
+}
 
 useSeoMeta({
   title: () => menuStore.currentFolderName,
@@ -29,6 +28,11 @@ onMounted(() => {
     <main-slider />
 
     <client-only>
+      <pre>
+        {{ currentMarker }}
+      </pre>
+    </client-only>
+    <client-only>
       <div class="address-selection" :style="{ '--height': `${mapHeight}px` }">
         <div class="delivery-types">
           <select-button
@@ -40,17 +44,18 @@ onMounted(() => {
             fluid
             :allow-empty="false"
           />
-
           <div class="delivery-body">
             <Transition name="slideX">
               <div v-if="activeDelivery === 0" class="delivery-item">
                 <list-with-search
-                  v-model:search="markerQuery"
                   title="Укажите ваш адрес"
                   search-placeholder="Поиск"
-                  :list="localAddresses"
+                  :list="addressList"
+                  :current-item="currentMarker"
                   title-key="title"
                   subtitle-key="address"
+                  active-key="title"
+                  @list-item-clicked="addressSelectHandle"
                 />
               </div>
             </Transition>
@@ -58,33 +63,44 @@ onMounted(() => {
             <Transition name="slideX">
               <div v-if="activeDelivery === 1" class="delivery-item">
                 <list-with-search
-                  v-model:search="markerQuery"
                   title="Откуда заберете заказ?"
                   subtitle="Выберите пункт выдачи на карте или используйте поиск"
                   search-placeholder="Поиск"
-                  :list="filteredMarkers"
+                  :list="restMarksList"
+                  :current-item="currentMarker"
                   title-key="title"
                   subtitle-key="address"
-                  @list-item-clicked="markerClickHandler"
+                  active-key="title"
+                  @list-item-clicked="addressSelectHandle"
                 />
               </div>
             </Transition>
           </div>
 
-          <Button fluid class="font-20-n" style="min-height: 46px" @click="handleLocationSubmit">
+          <Button fluid class="font-20-n" style="min-height: 46px" @click="submitMapHandler">
             Подтвердить
           </Button>
         </div>
         <map-component
-          :markers="markers"
+          :markers="restMarksList"
           :center-fixed-marker="activeDelivery === 0"
           :height="mapHeight"
-          @on-move="mapMoveHandler"
-          @marker-click="markerClickHandler"
-          @map-address-match="addressMatchHandler"
-          @address-match-error="addressMatchHandler"
+          :center-coords="markerCenterCoords"
+          @on-move="setMapCoords"
+          @marker-click="addressSelectHandle"
+          @map-address-match="setAddress"
+          @address-match-error="errorHandle"
         />
       </div>
+    </client-only>
+
+    <client-only>
+      <pre>
+        {{ mapCoords }}
+      </pre>
+      <pre>
+        {{ location }}
+      </pre>
     </client-only>
 
     <div class="container">

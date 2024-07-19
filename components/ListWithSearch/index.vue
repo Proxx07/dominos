@@ -1,7 +1,5 @@
 <script setup lang="ts">
 const props = defineProps<{
-  search: string
-
   title: string
   subtitle?: string
   searchPlaceholder?: string
@@ -9,6 +7,8 @@ const props = defineProps<{
   list: Array<Record<string, any>>
   titleKey: string
   subtitleKey?: string
+  activeKey?: string
+  currentItem?: Record<string, any>
 }>();
 
 const emit = defineEmits<{
@@ -16,15 +16,10 @@ const emit = defineEmits<{
   (e: 'listItemClicked', value: any): void
 }>();
 
-const searchQuery = computed({
-  get() {
-    return props.search;
-  },
-
-  set(value: string) {
-    emit('update:search', value);
-  },
-});
+const search = ref<string>('');
+const filteredList = computed(() => props.list.filter((item) => {
+  return item[props.titleKey].toLowerCase().includes(search.value.toLowerCase()) || (props.subtitleKey && item[props.subtitleKey]?.toLowerCase().includes(search.value.toLowerCase()));
+}));
 </script>
 
 <template>
@@ -39,20 +34,28 @@ const searchQuery = computed({
   </card>
 
   <IconField class="search-field">
-    <InputText v-model="searchQuery" :placeholder="searchPlaceholder" fluid class="font-12-n" />
-    <InputIcon v-show="searchQuery" class="pi pi-times cursor-pointer" @click="searchQuery = ''" />
+    <InputText v-model="search" :placeholder="searchPlaceholder" fluid class="font-12-n" />
+    <InputIcon v-show="search" class="pi pi-times cursor-pointer" @click="search = ''" />
   </IconField>
 
   <div class="address-list">
-    <card v-for="item in list" :key="item.id" class="secondary list-item cursor-pointer" @click="emit('listItemClicked', item)">
-      <template #title>
-        {{ item[titleKey] }}
-      </template>
+    <TransitionGroup name="fade">
+      <card
+        v-for="item in filteredList"
+        :key="item.id"
+        class="secondary list-item cursor-pointer"
+        :style="(activeKey && currentItem) && { '--border-color': item[activeKey] === currentItem[activeKey] ? 'var(--primary-500)' : 'transparent' }"
+        @click="emit('listItemClicked', item)"
+      >
+        <template #title>
+          <div v-html="item[titleKey]" />
+        </template>
 
-      <template v-if="subtitleKey" #content>
-        {{ item[subtitleKey] }}
-      </template>
-    </card>
+        <template v-if="subtitleKey" #content>
+          <div v-html="item[subtitleKey]" />
+        </template>
+      </card>
+    </TransitionGroup>
   </div>
 </template>
 

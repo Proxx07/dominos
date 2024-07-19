@@ -9,12 +9,3 @@ export interface IRestaurant {
   startOfWorkingTime: number
   endOfWorkingTime: number
 }
-
-export interface IMarker {
-  id: string
-  coordinates: [number, number]
-  title: string
-  iconSrc: string
-  regionID?: number
-  address?: string
-}

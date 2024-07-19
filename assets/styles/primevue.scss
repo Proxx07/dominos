@@ -77,7 +77,10 @@
   --p-card-border-radius: var(--radius-m);
   --p-card-color: var(--primary-500);
   --p-content-color: var(--accent-text);
+  --border-color: transparent;
 
+  border: 1px solid var(--border-color);
+  transition: var(--transition-fast);
   &.secondary {
     --p-card-background: var(--primary-50);
     --p-card-color: var(--accent-text);

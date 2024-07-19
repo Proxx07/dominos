@@ -12,40 +12,52 @@ import {
 import type { Feature, YMap } from '@yandex/ymaps3-types';
 
 import { useDebounceFn } from '@vueuse/core';
-import type { IMarker } from '~/composables/useRestaurants/types';
+import type { YMapProps } from '@yandex/ymaps3-types/imperative/YMap';
+import type { IMarker } from '~/composables/useLocationStorage/types';
 import { LongLat } from '~/composables/useShopData/models';
 
 const props = defineProps<{
   markers: IMarker[]
   centerFixedMarker: boolean
   height: number // px
+  centerCoords?: [number, number]
 }>();
 
 const emit = defineEmits<{
   (e: 'onMove', value: [number, number]): void
   (e: 'markerClick', value: IMarker): void
-  (e: 'mapAddressMatch', value: Feature): void
+  (e: 'mapAddressMatch', value: IMarker): void
   (e: 'addressMatchError'): void
 }>();
 
 const map = shallowRef<YMap>();
 const adressTitle = ref<string>('');
 
-const mapSettings = {
-  location: {
-    center: LongLat,
-    zoom: 12,
-  },
-};
+const settings = computed<YMapProps>(() => {
+  return {
+    location: {
+      center: props.centerCoords ?? LongLat,
+      zoom: 12,
+    },
+  };
+});
 
 const moveHandler = useDebounceFn(async (longLat: [number, number]) => {
   emit('onMove', longLat);
-
   if (!props.centerFixedMarker) return;
   const searchResult = await ymaps3.search({ text: longLat.join(), bounds: map.value?.bounds });
   adressTitle.value = searchResult[0].properties.name;
+
   if (searchResult.length && searchResult) {
-    emit('mapAddressMatch', searchResult[0]);
+    const result = searchResult[0] as Feature;
+    const marker: IMarker = {
+      id: `${Date.now()}`,
+      title: result.properties.name,
+      coordinates: (result.geometry?.coordinates as [number, number]),
+      address: result.properties?.description ?? '',
+      iconSrc: '',
+    };
+    emit('mapAddressMatch', marker);
   }
   else {
     emit('addressMatchError');
@@ -55,7 +67,7 @@ const moveHandler = useDebounceFn(async (longLat: [number, number]) => {
 
 <template>
   <div class="map">
-    <YandexMap v-model="map" :settings="mapSettings" width="100%" :height="`${height}px`">
+    <YandexMap v-model="map" :settings="settings" width="100%" :height="`${height}px`" real-settings-location>
       <YandexMapDefaultSchemeLayer />
       <YandexMapDefaultFeaturesLayer />
       <YandexMapControls :settings="{ position: 'left' }">

@@ -1,19 +1,38 @@
 import { useLocalStorage } from '@vueuse/core';
-import type { IMarker } from '~/composables/useRestaurants/types';
+import type { ILocationData } from './types';
+import { setLocation } from './models';
+import type { IMarker } from '~/composables/useLocationStorage/types';
 
 export function useLocationStorage() {
-  const storage = useLocalStorage('location', {
-    RestaurantId: '',
-    RegionId: 0,
-    Longitude: 0,
-    Latitude: 0,
-  });
+  const location = useLocalStorage<ILocationData>('location', setLocation());
+  const addressList = useLocalStorage<IMarker[]>('addresses', []);
 
-  const localAddresses = useLocalStorage<IMarker[]>('addresses', []);
+  const setLocationCoords = (longLat: [number, number]) => {
+    location.value.Longitude = longLat[0];
+    location.value.Latitude = longLat[1];
+  };
+
+  const setLocationFromMarker = (marker: IMarker) => {
+    const loc: ILocationData = {
+      RestaurantId: marker?.id ?? '',
+      Longitude: marker.coordinates[0],
+      Latitude: marker.coordinates[1],
+      RegionId: marker?.regionID ?? 0,
+    };
+
+    location.value = setLocation(loc);
+  };
+
+  const pushNewAddress = (value: IMarker) => {
+    addressList.value.push(value);
+  };
 
   return {
-    storage,
+    location,
+    setLocationCoords,
+    setLocationFromMarker,
 
-    localAddresses,
+    addressList,
+    pushNewAddress,
   };
 }

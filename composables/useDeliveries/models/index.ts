@@ -1,13 +1,13 @@
 import type { IDelivery } from '../types';
 
-export const deliveryTypes: IDelivery[] = [
+export const deliveries: IDelivery[] = [
   {
     name: 'delivery.deliver',
     value: 0,
   },
 
   {
-    name: 'delviery.self',
+    name: 'delivery.self',
     value: 1,
   },
 ];

@@ -1,12 +1,10 @@
-import type { IMenuQuery, IMenuResponse } from './types';
-import { setMenuQuery } from './models';
+import type { IMenuResponse } from './types';
 import $request from '~/api';
 import { useMenuStore } from '~/store/menu';
 
 export function useShopData() {
   const menuStore = useMenuStore();
   const cookie = useCookie('token');
-  const query = ref<IMenuQuery>(setMenuQuery());
 
   const loginMockUser = async () => {
     cookie.value = '';
