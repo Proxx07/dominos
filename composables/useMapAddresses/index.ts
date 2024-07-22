@@ -2,8 +2,10 @@ import type { IRestaurant } from './types';
 import { setMarkerFromRestaurant, setRestaurant } from './models';
 import type { IMarker } from '~/composables/useLocationStorage/types';
 import $request from '~/api';
+import { useToastStore } from '~/store/toasts';
 
 export function useMapAddresses() {
+  const $toast = useToastStore();
   const mapCoords = ref <[number, number]>();
   const markerCenterCoords = ref<[number, number]>();
 
@@ -12,9 +14,13 @@ export function useMapAddresses() {
   const restaurantsList = ref<IRestaurant[]>([]);
 
   const getRestaurants = async () => {
-    const result = await $request<IRestaurant[]>('/api/restaurants/List');
-
-    restaurantsList.value = [...result.map(i => setRestaurant(i))];
+    try {
+      const result = await $request<IRestaurant[]>('/api/restaurants/List');
+      restaurantsList.value = [...result.map(i => setRestaurant(i))];
+    }
+    catch (e) {
+      $toast.error('error.title', 'error.fetch-error');
+    }
   };
 
   const setMapCoords = (value: [number, number]) => {

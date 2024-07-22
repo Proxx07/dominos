@@ -50,7 +50,7 @@ export function useMenu(emit?: IEmits) {
     }
 
     catch (e) {
-      $toast.error('errors.title', 'error.fetch-error');
+      $toast.error('error.title', 'error.fetch-error');
       return { error: true };
     }
 

@@ -48,3 +48,19 @@
   opacity: 0;
   transform: translateX(100%);
 }
+
+
+.slideY-enter-active,
+.slideY-leave-active {
+  transition: var(--transition-slow);
+}
+
+.slideY-enter-from {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+.slideY-leave-to {
+  opacity: 0;
+  transform: translateY(100px);
+}

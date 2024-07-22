@@ -19,19 +19,27 @@ onMounted(() => {
 
 <template>
   <div class="page-content">
-    <main-slider />
+    <!--    <main-slider /> -->
 
-    <div class="container">
+    <div v-if="false" class="container">
       <stock-list title="Акции дня" :list="[]" />
     </div>
 
     <div class="container">
       <div class="products">
         <div class="products__header">
-          <h2>Пицца</h2>
-          <div class="product-folders" />
+          <h2>{{ menuStore.currentFolderName }}</h2>
         </div>
-        <div class="products__list" />
+        <div class="products__list">
+          <transition-group name="slideY">
+            <div v-for="product in menuStore.productList" :key="product.id" class="product">
+              <Image :src="product.bigImageUrl" :alt="product.name" preview />
+              <div class="product__name">
+                {{ product.name }}
+              </div>
+            </div>
+          </transition-group>
+        </div>
       </div>
     </div>
 
@@ -44,5 +52,26 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.products {
+  &__header {
+    margin-bottom: 2rem;
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
 
+.product {
+  background: var(--white);
+  padding: 1.6rem;
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow);
+  &__name {
+    font: var(--font-18-b);
+    color: var(--accent-text);
+    text-align: center;
+  }
+}
 </style>
