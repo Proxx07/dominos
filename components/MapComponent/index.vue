@@ -42,8 +42,9 @@ const settings = computed<YMapProps>(() => {
   };
 });
 
-const moveHandler = useDebounceFn(async (longLat: [number, number]) => {
+const updateHandler = useDebounceFn(async (longLat: [number, number]) => {
   emit('onMove', longLat);
+
   if (!props.centerFixedMarker) return;
   const searchResult = await ymaps3.search({ text: longLat.join(), bounds: map.value?.bounds });
   adressTitle.value = searchResult[0].properties.name;
@@ -62,7 +63,7 @@ const moveHandler = useDebounceFn(async (longLat: [number, number]) => {
   else {
     emit('addressMatchError');
   }
-}, 500);
+}, 100);
 
 function markerClickHandler(value: IMarker) {
   if (props.centerFixedMarker) return;
@@ -93,7 +94,7 @@ function markerClickHandler(value: IMarker) {
       </YandexMapMarker>
       <YandexMapListener
         :settings="{
-          onUpdate: (e) => moveHandler([e.location.center[0], e.location.center[1]]),
+          onUpdate: (e) => updateHandler([e.location.center[0], e.location.center[1]]),
         }"
       />
     </YandexMap>
@@ -156,8 +157,8 @@ function markerClickHandler(value: IMarker) {
 }
 .location-message {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: 0;
+  left: 0;
   font: var(--font-16-b);
   pointer-events: none;
   :deep(.p-message-text) {

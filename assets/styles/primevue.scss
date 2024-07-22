@@ -101,5 +101,35 @@
   .p-card-content {
     color: var(--p-content-color);
     font: var(--font-14-n);
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+/*Dialog */
+.p-dialog {
+  &.sm {
+    --width: 64rem;
+  }
+
+  &.md {
+    --width: 128rem;
+  }
+
+  &.lg {
+    --width: 160rem;
+  }
+
+  &.full {
+    width: 100%;
+  }
+
+  width: 100%;
+  max-width: var(--width);
+
+  &-title {
+    font: var(--font-24-n);
+    color: var(--primary-500);
   }
 }

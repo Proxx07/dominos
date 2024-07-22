@@ -51,8 +51,8 @@ const filteredList = computed(() => props.list.filter((item) => {
           <div v-html="item[titleKey]" />
         </template>
 
-        <template v-if="subtitleKey" #content>
-          <div v-html="item[subtitleKey]" />
+        <template v-if="subtitleKey && item[subtitleKey]" #content>
+          <div v-if="subtitleKey && item[subtitleKey]" v-html="item[subtitleKey]" />
         </template>
       </card>
     </TransitionGroup>
