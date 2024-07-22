@@ -8,5 +8,21 @@
   "header": {
     "delivery": "Delivery in 30 minutes",
     "login": "Login"
+  },
+  "map": {
+    "delivery": "",
+    "delivery-title": "",
+    "delivery-subtitle": "",
+    "self-delivery": "",
+    "self-delivery-title": "",
+    "self-delivery-subtitle": "",
+    "message": "",
+    "submit-button": "",
+    "location-error": "Не удалось определить адрес"
+  },
+
+  "error": {
+    "title": "Error",
+    "fetch-error": "Не удалось загрузить данные!"
   }
 }

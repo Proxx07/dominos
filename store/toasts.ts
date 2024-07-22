@@ -1,14 +1,16 @@
 import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
 
 export const useToastStore = defineStore('toasts', () => {
+  const { t } = useI18n({ useScope: 'global' });
   const $toast = useToast();
   const duration = 3000;
 
   const success = (title: string, text?: string) => {
     $toast.add({
       severity: 'success',
-      summary: title,
-      detail: text,
+      summary: t(title),
+      detail: text ? t(text) : '',
       life: duration,
     });
   };
@@ -16,8 +18,8 @@ export const useToastStore = defineStore('toasts', () => {
   const info = (title: string, text?: string) => {
     $toast.add({
       severity: 'info',
-      summary: title,
-      detail: text,
+      summary: t(title),
+      detail: text ? t(text) : '',
       life: duration,
     });
   };
@@ -25,8 +27,8 @@ export const useToastStore = defineStore('toasts', () => {
   const warning = (title: string, text?: string) => {
     $toast.add({
       severity: 'warn',
-      summary: title,
-      detail: text,
+      summary: t(title),
+      detail: text ? t(text) : '',
       life: duration,
     });
   };
@@ -34,8 +36,8 @@ export const useToastStore = defineStore('toasts', () => {
   const error = (title: string, text?: string) => {
     $toast.add({
       severity: 'error',
-      summary: title,
-      detail: text,
+      summary: t(title),
+      detail: text ? t(text) : '',
       life: duration,
     });
   };

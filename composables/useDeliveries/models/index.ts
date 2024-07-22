@@ -2,12 +2,12 @@ import type { IDelivery } from '../types';
 
 export const deliveries: IDelivery[] = [
   {
-    name: 'delivery.deliver',
+    name: 'map.delivery',
     value: 0,
   },
 
   {
-    name: 'delivery.self',
+    name: 'map.self-delivery',
     value: 1,
   },
 ];

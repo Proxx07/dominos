@@ -8,5 +8,21 @@
   "header": {
     "delivery": "30 daqiqa ichida etkazish",
     "login": "Kirish"
+  },
+  "map": {
+    "delivery": "",
+    "delivery-title": "",
+    "delivery-subtitle": "",
+    "self-delivery": "",
+    "self-delivery-title": "",
+    "self-delivery-subtitle": "",
+    "message": "",
+    "submit-button": "",
+    "location-error": "Не удалось определить адрес"
+  },
+
+  "error": {
+    "title": "Xato",
+    "fetch-error": "Не удалось загрузить данные!"
   }
 }

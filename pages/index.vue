@@ -4,14 +4,10 @@ import { useMenu } from '~/composables/useMenu';
 const menuStore = useMenuStore();
 const mapHeight = 500;
 const {
-  location, addressList, setAddress,
-  mapCoords, markerCenterCoords, currentMarker, restMarksList, getRestaurants, setMapCoords,
+  location, addressList, setAddress, addressMatchError,
+  markerCenterCoords, currentMarker, restMarksList, getRestaurants, setMapCoords,
   activeDelivery, deliveryList, addressSelectHandle, submitMapHandler,
 } = useMenu();
-
-function errorHandle(e) {
-  console.log(e);
-}
 
 useSeoMeta({
   title: () => menuStore.currentFolderName,
@@ -28,17 +24,12 @@ onMounted(() => {
     <main-slider />
 
     <client-only>
-      <pre>
-        {{ currentMarker }}
-      </pre>
-    </client-only>
-    <client-only>
       <div class="address-selection" :style="{ '--height': `${mapHeight}px` }">
         <div class="delivery-types">
           <select-button
             v-model="activeDelivery"
             :options="deliveryList"
-            option-label="name"
+            :option-label="(e) => $t(e.name)"
             option-value="value"
             aria-labelledby="basic"
             fluid
@@ -48,8 +39,9 @@ onMounted(() => {
             <Transition name="slideX">
               <div v-if="activeDelivery === 0" class="delivery-item">
                 <list-with-search
-                  title="Укажите ваш адрес"
-                  search-placeholder="Поиск"
+                  :title="$t('map.delivery-title')"
+                  :subtitle="$t('map.delivery-subtitle')"
+                  :search-placeholder="$t('shared.search')"
                   :list="addressList"
                   :current-item="currentMarker"
                   title-key="title"
@@ -63,9 +55,9 @@ onMounted(() => {
             <Transition name="slideX">
               <div v-if="activeDelivery === 1" class="delivery-item">
                 <list-with-search
-                  title="Откуда заберете заказ?"
-                  subtitle="Выберите пункт выдачи на карте или используйте поиск"
-                  search-placeholder="Поиск"
+                  :title="$t('map.self-delivery-title')"
+                  :subtitle="$t('map.self-delivery-subtitle')"
+                  :search-placeholder="$t('shared.search')"
                   :list="restMarksList"
                   :current-item="currentMarker"
                   title-key="title"
@@ -89,18 +81,9 @@ onMounted(() => {
           @on-move="setMapCoords"
           @marker-click="addressSelectHandle"
           @map-address-match="setAddress"
-          @address-match-error="errorHandle"
+          @address-match-error="addressMatchError"
         />
       </div>
-    </client-only>
-
-    <client-only>
-      <pre>
-        {{ mapCoords }}
-      </pre>
-      <pre>
-        {{ location }}
-      </pre>
     </client-only>
 
     <div class="container">
@@ -133,12 +116,14 @@ onMounted(() => {
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    padding-right: .5rem;
   }
 
   .delivery-item {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
     :deep(.search-field) {
       position: sticky;
       top: 0;

@@ -23,7 +23,10 @@ export function useLocationStorage() {
     location.value = setLocation(loc);
   };
 
+  const existLocations = computed(() => addressList.value.map(loc => loc.coordinates.join()));
+
   const pushNewAddress = (value: IMarker) => {
+    if (existLocations.value.includes(value.coordinates.join())) return;
     addressList.value.push(value);
   };
 

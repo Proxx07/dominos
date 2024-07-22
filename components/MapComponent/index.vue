@@ -63,6 +63,11 @@ const moveHandler = useDebounceFn(async (longLat: [number, number]) => {
     emit('addressMatchError');
   }
 }, 500);
+
+function markerClickHandler(value: IMarker) {
+  if (props.centerFixedMarker) return;
+  emit('markerClick', value);
+}
 </script>
 
 <template>
@@ -84,7 +89,7 @@ const moveHandler = useDebounceFn(async (longLat: [number, number]) => {
         position="top-center left-center"
         style="width: 60px; height: 65px;"
       >
-        <img :src="marker.iconSrc" style="cursor: pointer;" @click="emit('markerClick', marker)">
+        <img :src="marker.iconSrc" style="cursor: pointer;" @click="markerClickHandler(marker)">
       </YandexMapMarker>
       <YandexMapListener
         :settings="{
@@ -98,7 +103,7 @@ const moveHandler = useDebounceFn(async (longLat: [number, number]) => {
     <i v-if="centerFixedMarker" class="fixed-center-marker pi pi-map-marker" />
     <Transition name="fade">
       <Message v-if="centerFixedMarker" severity="info" class="location-message">
-        Убедитесь, что метка правильно расположена!
+        {{ $t('map.message') }}
       </Message>
     </Transition>
   </div>
