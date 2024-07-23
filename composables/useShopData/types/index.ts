@@ -61,10 +61,21 @@ export interface IMenuResponse {
 }
 
 export interface IMenuQuery {
-  RestaurantId?: number
+  RestaurantId?: string
 
   RegionId: number
   Longitude: number
   Latitude: number
   OrderTypeId: number
+}
+export interface IProcessedProduct extends ICategory {
+  modifiers?: IProcessedProduct[]
+}
+export interface IProcessedResponse {
+  folders: ICategory[]
+  products: IProcessedProduct[]
+
+  productsForCart: IProduct[]
+  priceOfDelivery: number
+  deliveryDuration: number
 }

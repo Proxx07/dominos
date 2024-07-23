@@ -1,6 +1,7 @@
-import type { IMenuResponse } from '~/composables/useShopData/types';
+import type {ICategory, IMenuResponse, IProcessedProduct, IProcessedResponse} from '~/composables/useShopData/types';
+import {EventHandlerRequest, H3Event, getQuery} from "h3";
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
   const runtimeConfig = useRuntimeConfig();
   const { token } = await $fetch<{ token: string }>(`${runtimeConfig.public.API_URL}/api/account/token`, {
     method: 'POST',
@@ -10,43 +11,44 @@ export default defineEventHandler(async () => {
     },
   });
 
+  const query = getQuery(event)
+
   const result = await $fetch<IMenuResponse>(`${runtimeConfig.public.API_URL}/api/regionmenu`, {
     query: {
-      regionId: 0,
-      Language: 2,
+      regionId: query.regionId ?? 0,
+      Language: query.Language ?? 2,
     },
     headers: {
       Authorization: `Bearer ${token}`,
+      Token: token
     },
   });
 
-  const data = result.categories;
-
-  const mainFolders = data.filter(folder => !folder.parentId);
-  const productList = data
-    .filter(product => mainFolders.some(folder => product.parentId === folder.id))
-    .map((product) => {
+  const mainFolders: ICategory[] = result.categories.filter(folder => !folder.parentId);
+  const productList: IProcessedProduct[] = result.categories
+    .filter((product: ICategory) => mainFolders.some(folder => product.parentId === folder.id))
+    .map((product: ICategory) => (
+      {...product, modifiers: result.categories.filter(item => product.id === item.parentId)})
+    )
+    .map((product: IProcessedProduct) => {
       return {
         ...product,
-        modifiers: data.filter(item => product.id === item.parentId),
-      };
-    })
-    .map((product) => {
-      return {
-        ...product,
-        modifiers: product.modifiers.map((mod) => {
+        modifiers: !product.modifiers ? [] : product.modifiers.map((modifier: IProcessedProduct) => {
           return {
-            ...mod,
-            subModifier: data.filter(item => item.parentId === mod.id),
+            ...modifier,
+            modifiers: result.categories.filter(item => item.parentId === modifier.id),
           };
         }),
       };
     });
 
-  const response = {
-    // productsForCart: result.products,
+  const response: IProcessedResponse = {
     folders: mainFolders,
     products: productList,
+
+    productsForCart: result.products,
+    priceOfDelivery: result.priceOfDelivery,
+    deliveryDuration: result.deliveryDuration,
   };
 
   return response;

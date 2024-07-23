@@ -11,7 +11,7 @@ const menuStore = useMenuStore();
 
     <footer class="footer">
       <div class="container">
-        <navigation :folders="menuStore.mainFolders" />
+        <navigation :folders="menuStore.folders" />
       </div>
 
       <div class="info-part">

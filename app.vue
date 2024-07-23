@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { useShopData } from '~/composables/useShopData';
-
-const { loginMockUser, getShopData } = useShopData();
-await loginMockUser();
-await getShopData();
-
-const $route = useRoute();
-
+const locale = useCookie('lang');
+const query = {Language: ln[(locale?.value ?? DEFAULT_LANGUAGE)]};
 const menuStore = useMenuStore();
 
-watch(() => $route.query.folder as string, (value) => {
-  menuStore.currentFolder = value || '';
-});
+const { data } = await useFetch('/api/shop', { query });
+menuStore.folders = data.value.folders
+menuStore.products = data.value.products
+menuStore.productsForCart = data.value.productsForCart
 </script>
 
 <template>

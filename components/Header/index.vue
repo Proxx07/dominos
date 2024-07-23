@@ -33,12 +33,12 @@ const menuStore = useMenuStore();
 
       <div class="header-right">
         <lang-switcher />
-        <Select v-model="city" :options="options" />
+<!--        <Select v-model="city" :options="options" />-->
         <Button :label="$t('header.login')" class="login" />
       </div>
     </div>
     <div class="header__menu container">
-      <navigation :folders="menuStore.mainFolders" :pages="NavigationPages" class="navigation" />
+      <navigation :folders="menuStore.folders" :pages="NavigationPages" class="navigation" />
       <Button icon="pi pi-shopping-cart" severity="secondary" class="cart-button" label="Корзина 0 сум">
         <template #icon>
           <icon :icon="cart" />
