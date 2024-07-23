@@ -109,24 +109,23 @@
 
 /*Dialog */
 .p-dialog {
+  width: 100%;
+
   &.sm {
-    --width: 64rem;
+    max-width: 64rem;
   }
 
   &.md {
-    --width: 128rem;
+    max-width: 128rem;
   }
 
   &.lg {
-    --width: 160rem;
+    max-width: 160rem;
   }
 
   &.full {
-    width: 100%;
+    max-width: 100%;
   }
-
-  width: 100%;
-  max-width: var(--width);
 
   &-title {
     font: var(--font-24-n);

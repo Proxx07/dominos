@@ -6,12 +6,12 @@
     "@nuxt/types",
     "nuxt-i18n",
     "@pinia/nuxt",
-    "@yandex/ymaps3-types",
+    "@yandex/ymaps3-types"
   ],
   "compilerOptions": {
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/@yandex/ymaps3-types",
+      "./node_modules/@yandex/ymaps3-types"
     ]
   }
 }

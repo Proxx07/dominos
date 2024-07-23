@@ -14,19 +14,38 @@ export const useMenuStore = defineStore('menu-store', () => {
     return mainFolders.value.map((i: ICategory) => i.id);
   });
 
-  const currentFolder = ref<string>($route.query.folder as string);
-
-  const activeFolder = computed(() => currentFolder.value ? currentFolder.value : mainFoldersIds.value[0]);
-
-  const productList = computed(() => categories.value.filter((folder: ICategory) => {
-    return mainFoldersIds.value.includes(folder.parentId) && folder.parentId === activeFolder.value;
-  }));
-
   const folderNamesById = computed<Record<ICategory['id'], ICategory['name']>>(() => {
     return mainFolders.value.reduce((acc, curr) => {
       return { ...acc, [curr.id]: curr.name };
     }, {});
   });
+
+  const products = computed(() => {
+    return categories.value
+      .filter(product => mainFolders.value.some(folder => product.parentId === folder.id))
+      .map((product) => {
+        return {
+          ...product,
+          modifiers: categories.value.filter(item => product.id === item.parentId),
+        };
+      })
+      .map((product) => {
+        return {
+          ...product,
+          modifiers: product.modifiers.map((mod) => {
+            return {
+              ...mod,
+              subModifier: categories.value.filter(item => item.parentId === mod.id),
+            };
+          }),
+        };
+      });
+  });
+
+  const productList = computed(() => products.value.filter(product => activeFolder.value === product.parentId));
+
+  const currentFolder = ref<string>($route.query.folder as string);
+  const activeFolder = computed<string>(() => currentFolder.value ? currentFolder.value : mainFoldersIds.value[0]);
 
   const currentFolderName = computed<string>(() => {
     return folderNamesById.value[activeFolder.value];
@@ -36,10 +55,15 @@ export const useMenuStore = defineStore('menu-store', () => {
     productsForCart,
     categories,
     mainFolders,
-    mainFoldersIds,
+    // mainFoldersIds,
 
-    productList,
     currentFolder,
     currentFolderName,
+
+    products,
+    productList,
+
+    // modifierList,
+    // modifierIds,
   };
 });
