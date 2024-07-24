@@ -33,7 +33,7 @@ const menuStore = useMenuStore();
 
       <div class="header-right">
         <lang-switcher />
-<!--        <Select v-model="city" :options="options" />-->
+
         <Button :label="$t('header.login')" class="login" />
       </div>
     </div>
@@ -85,6 +85,7 @@ const menuStore = useMenuStore();
 .header-right {
   display: flex;
   gap: .7rem;
+  justify-content: flex-end;
   .login {
     min-width: 11rem;
   }

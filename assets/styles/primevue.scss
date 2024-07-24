@@ -33,6 +33,9 @@
     line-height: 1.5;
   }
 }
+.p-selectbutton .p-togglebutton {
+  border-radius: var(--radius-s) !important;
+}
 
 .p-menubar {
   --p-menubar-border-color: transparent;

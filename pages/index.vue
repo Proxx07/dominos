@@ -6,7 +6,6 @@ useSeoMeta({
   title: () => menuStore.folderName,
   description: () => menuStore.folderName,
 });
-
 </script>
 
 <template>
@@ -22,7 +21,7 @@ useSeoMeta({
         </div>
         <div class="products__list">
           <transition-group name="fade-slow">
-            <product v-for="product in menuStore.productList" :key="product.id" :product="product" class="product"/>
+            <product v-for="product in menuStore.productList" :key="product.id" :product="product" class="product" />
           </transition-group>
         </div>
       </div>
@@ -45,21 +44,9 @@ useSeoMeta({
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-  }
-}
-
-.product {
-  background: var(--white);
-  padding: 1.6rem;
-  border-radius: var(--radius-l);
-  box-shadow: var(--shadow);
-  &.fade-slow-leave-active {
-    display: none;
-  }
-  &__name {
-    font: var(--font-18-b);
-    color: var(--accent-text);
-    text-align: center;
+    .fade-slow-leave-active {
+      display: none !important;
+    }
   }
 }
 </style>

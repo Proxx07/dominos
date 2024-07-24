@@ -1,5 +1,6 @@
-import type {ICategory, IMenuResponse, IProcessedProduct, IProcessedResponse} from '~/composables/useShopData/types';
-import {EventHandlerRequest, H3Event, getQuery} from "h3";
+import type { EventHandlerRequest, H3Event } from 'h3';
+import { getQuery } from 'h3';
+import type { ICategory, IMenuResponse, IProcessedProduct, IProcessedResponse } from '~/composables/useShopData/types';
 
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
   const runtimeConfig = useRuntimeConfig();
@@ -11,7 +12,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     },
   });
 
-  const query = getQuery(event)
+  const query = getQuery(event);
 
   const result = await $fetch<IMenuResponse>(`${runtimeConfig.public.API_URL}/api/regionmenu`, {
     query: {
@@ -20,25 +21,25 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     },
     headers: {
       Authorization: `Bearer ${token}`,
-      Token: token
+      Token: token,
     },
   });
 
   const mainFolders: ICategory[] = result.categories.filter(folder => !folder.parentId);
   const productList: IProcessedProduct[] = result.categories
     .filter((product: ICategory) => mainFolders.some(folder => product.parentId === folder.id))
-    .map((product: ICategory) => (
-      {...product, modifiers: result.categories.filter(item => product.id === item.parentId)})
-    )
+    .map((product: ICategory) => ({ ...product, modifiers: result.categories.filter(item => product.id === item.parentId) }))
     .map((product: IProcessedProduct) => {
       return {
         ...product,
-        modifiers: !product.modifiers ? [] : product.modifiers.map((modifier: IProcessedProduct) => {
-          return {
-            ...modifier,
-            modifiers: result.categories.filter(item => item.parentId === modifier.id),
-          };
-        }),
+        modifiers: !product.modifiers
+          ? []
+          : product.modifiers.map((modifier: IProcessedProduct) => {
+            return {
+              ...modifier,
+              modifiers: result.categories.filter(item => item.parentId === modifier.id),
+            };
+          }),
       };
     });
 
