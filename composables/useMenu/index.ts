@@ -2,9 +2,8 @@ import type { IEmits } from './types';
 import { useLocationStorage } from '~/composables/useLocationStorage';
 import { useMapAddresses } from '~/composables/useMapAddresses';
 import { useDelivery } from '~/composables/useDeliveries';
-import type { ILocationData, IMarker } from '~/composables/useLocationStorage/types';
-import type { IMenuResponse } from '~/composables/useShopData/types';
-import $request from '~/api';
+import type { IMarker } from '~/composables/useLocationStorage/types';
+import type { IProcessedResponse } from '~/composables/useShopData/types';
 
 export function useMenu(emit?: IEmits) {
   const menuStore = useMenuStore();
@@ -30,35 +29,6 @@ export function useMenu(emit?: IEmits) {
     loading.value = true;
   };
 
-  const getMenuByLocation = async () => {
-    loading.value = true;
-
-    const query: ILocationData = {
-      ...location.value,
-      ...(isDelivery.value && { RestaurantId: '' }),
-    };
-
-    try {
-      const result = await $request<IMenuResponse>('/api/menu', { query });
-      if (result.error) {
-        $toast.error('error.title', result.error);
-        return { error: true };
-      }
-
-      menuStore.categories = result.categories;
-      return { error: false };
-    }
-
-    catch (e) {
-      $toast.error('error.title', 'error.fetch-error');
-      return { error: true };
-    }
-
-    finally {
-      loading.value = false;
-    }
-  };
-
   const addressMatchError = () => {
     $toast.error('errors.title', 'error.location-error');
     currentMarker.value = undefined;
@@ -81,6 +51,13 @@ export function useMenu(emit?: IEmits) {
     markerCenterCoords.value = address.coordinates;
   };
 
+  const query = computed(() => {
+    return {
+      ...location.value,
+      RestaurantId: isDelivery.value ? '' : location.value.RestaurantId,
+    };
+  });
+
   const submitMapHandler = async (): Promise<void> => {
     if (!isCorrectDeliveryAddress.value) {
       const warningText = isDelivery.value ? 'Сначала укажите адрес' : 'Сначала укажите точку выдачи';
@@ -88,27 +65,32 @@ export function useMenu(emit?: IEmits) {
       return;
     }
 
-    const { error } = await getMenuByLocation();
-    if (error) return;
-
     loading.value = true;
+    const { data, error } = await useFetch<IProcessedResponse>('/api/shop', { query: query.value });
+    loading.value = false;
+
+    if (error.value || data.value?.error) {
+      if (data.value?.error) return $toast.error('error.title', data.value.error);
+      return $toast.error('error.title', 'error.fetch-error');
+    }
 
     if (isDelivery.value && currentMarker.value) {
+      loading.value = true;
       pushNewAddress(currentMarker.value);
     }
 
     if (emit) {
       await new Promise(resolve => setTimeout(resolve, 500));
+      loading.value = false;
       emit('submit');
     }
-    loading.value = false;
   };
 
   return {
     location, addressList, setLocationCoords, setLocationFromMarker, pushNewAddress,
 
     markerCenterCoords, currentMarker, restMarksList, getRestaurants,
-    addressMatchError, getMenuByLocation,
+    addressMatchError,
 
     activeDelivery, deliveryList, addressSelectHandle, setAddress, submitMapHandler,
 

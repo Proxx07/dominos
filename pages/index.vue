@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const menuStore = useMenuStore();
-const modal = ref<boolean>(false);
+const modal = ref<boolean>(true);
 
 useSeoMeta({
   title: () => menuStore.folderName,
@@ -29,7 +29,7 @@ useSeoMeta({
 
     <client-only>
       <Dialog v-model:visible="modal" class="md" modal :draggable="false" header="Выберите тип приема">
-        <delivery-map-widget @submit="modal = false" />
+        <delivery-map-widget @submit="modal = true" />
       </Dialog>
     </client-only>
   </div>

@@ -67,6 +67,8 @@ export interface IMenuQuery {
   Longitude: number
   Latitude: number
   OrderTypeId: number
+
+  Language?: number
 }
 export interface IProcessedProduct extends ICategory {
   modifiers?: IProcessedProduct[]
@@ -78,4 +80,6 @@ export interface IProcessedResponse {
   productsForCart: IProduct[]
   priceOfDelivery: number
   deliveryDuration: number
+
+  error?: string
 }

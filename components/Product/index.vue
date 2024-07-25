@@ -44,7 +44,7 @@ const thisProduct = computed<IProduct>(() => {
     </div>
 
     <div class="product__name">
-      {{ thisProduct?.name }}
+      {{ product?.name }}
     </div>
 
     <div class="product__description">
