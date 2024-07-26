@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import type { IProcessedProduct, IProduct } from '~/composables/useShopData/types';
+import type {ICartItem, IProcessedProduct, IProduct} from '~/composables/useShopData/types';
 
 const props = defineProps<{
   product: IProcessedProduct
 }>();
 
+const emit = defineEmits<{
+  (e: 'addToCart', value: ICartItem)
+}>();
+
 const menuStore = useMenuStore();
+const cartStore = useCartStore();
 
 const sizeID = ref<string>('');
 const modifierID = ref<string>('');
@@ -34,6 +39,20 @@ const thisProduct = computed<IProduct>(() => {
   if (modifierID.value) return menuStore.productsForCart.filter(prod => prod.subCategory?.id === modifierID.value)[0];
   if (sizeID.value) return menuStore.productsForCart.filter(prod => prod.subCategory?.id === sizeID.value)[0];
   return menuStore.productsForCart.filter(prod => prod.subCategory?.id === props.product.id)[0];
+});
+
+const addToCart = (value: IProduct, amount?: number) => {
+  emit('addToCart', {id: value.id, amount: amount ?? 1});
+}
+
+const cartProdAmount = computed({
+  get() {
+    return cartStore.cartStorageList.find(prod => thisProduct.value.id === prod.id)?.amount
+  },
+
+  set(amount: number) {
+    addToCart(thisProduct.value, amount)
+  }
 });
 </script>
 
@@ -73,7 +92,24 @@ const thisProduct = computed<IProduct>(() => {
       <div class="product__price">
         {{ thisProduct?.price }} сум.
       </div>
-      <Button severity="secondary" label="В корзину" class="buy-button" />
+      <client-only>
+        <Button
+          v-if="!cartProdAmount"
+          severity="secondary"
+          label="В корзину"
+          class="buy-button"
+          @click="addToCart(thisProduct)"
+        />
+
+        <input-number v-else v-model="cartProdAmount" inputId="horizontal-buttons" showButtons buttonLayout="horizontal">
+          <template #incrementbuttonicon>
+            <span class="pi pi-plus" />
+          </template>
+          <template #decrementbuttonicon>
+            <span class="pi pi-minus" />
+          </template>
+        </input-number>
+      </client-only>
     </div>
   </div>
 </template>

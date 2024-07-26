@@ -1,5 +1,5 @@
 import type { EventHandlerRequest, H3Event } from 'h3';
-import { getQuery, setCookie } from 'h3';
+import { getQuery } from 'h3';
 import type {
   ICategory,
   IMenuQuery,
@@ -11,13 +11,7 @@ import type {
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
   const runtimeConfig = useRuntimeConfig();
 
-  const { token } = await $fetch<{ token: string }>(`${runtimeConfig.public.API_URL}/api/account/token`, {
-    method: 'POST',
-    body: {
-      userName: 'admin',
-      password: 'P@ssw0rd',
-    },
-  });
+  const { token } = await $fetch<{ token: string }>('/api/token');
 
   const query = getQuery<IMenuQuery>(event);
 
@@ -61,8 +55,6 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
         };
       })
     : [];
-
-  setCookie(event, 'token', token);
 
   const response: IProcessedResponse = {
     folders: mainFolders,

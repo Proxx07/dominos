@@ -9,6 +9,9 @@ const { data } = await useFetch('/api/shop', { query });
 menuStore.folders = data.value?.folders ?? [];
 menuStore.products = data.value?.products ?? [];
 menuStore.productsForCart = data.value?.productsForCart ?? [];
+onBeforeMount(() => {
+  $fetch('/api/token/')
+});
 </script>
 
 <template>

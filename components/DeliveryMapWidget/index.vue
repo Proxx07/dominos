@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMenu } from '~/composables/useMenu';
+import  { useMenu } from '~/composables/useMenu';
 import type { IEmits } from '~/composables/useMenu/types';
 
 const emit = defineEmits<IEmits>();

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const menuStore = useMenuStore();
-const modal = ref<boolean>(true);
+const locationModal = useLocationModalStore();
+const cartStore = useCartStore();
 
 useSeoMeta({
   title: () => menuStore.folderName,
@@ -21,15 +22,15 @@ useSeoMeta({
         </div>
         <div class="products__list">
           <transition-group name="fade-slow">
-            <product v-for="product in menuStore.productList" :key="product.id" :product="product" class="product" />
+            <product v-for="product in menuStore.productList" :key="product.id" :product="product" class="product" @add-to-cart="cartStore.addToCart"/>
           </transition-group>
         </div>
       </div>
     </div>
 
     <client-only>
-      <Dialog v-model:visible="modal" class="md" modal :draggable="false" header="Выберите тип приема">
-        <delivery-map-widget @submit="modal = true" />
+      <Dialog v-model:visible="locationModal.opened" class="md" modal :draggable="false" header="Выберите тип приема">
+        <delivery-map-widget @submit="locationModal.close" />
       </Dialog>
     </client-only>
   </div>
