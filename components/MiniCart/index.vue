@@ -1,12 +1,30 @@
 <script setup lang="ts">
 import {cart} from "assets/images";
+import type {ICartItem} from "~/composables/useShopData/types";
+import type {PopoverMethods} from "primevue/popover";
 const cartStore = useCartStore();
-const miniCart = ref();
+const miniCart = ref<PopoverMethods>();
 const handleCartClick = (event) => {
-  miniCart.value.toggle(event)
+  if (cartStore.totalAmount) {
+    miniCart.value?.toggle(event)
+  }
+};
+
+const totalPriceText = computed<string>(() => `${cartStore.totalPrice.toLocaleString().replace(',', ' ')} сум`);
+
+const productAddHandler = (value: ICartItem) => {
+  cartStore.addToCart(value)
+  if (cartStore.totalAmount === 0) {
+    miniCart.value?.hide()
+  }
 }
 
-const totalPriceText = computed<string>(() => `${cartStore.totalPrice.toLocaleString().replace(',', ' ')} сум`)
+const productRemoveHandler = (id: string) => {
+  cartStore.removeFromCart(id)
+  if (cartStore.totalAmount === 0) {
+    miniCart.value?.hide()
+  }
+}
 </script>
 
 <template>
@@ -28,11 +46,12 @@ const totalPriceText = computed<string>(() => `${cartStore.totalPrice.toLocaleSt
     <div class="mini-cart__list">
       <transition-group name="slideY">
         <mini-cart-product
-            v-for="product in cartStore.cartList"
-            :key="product.id"
-            :product="product"
-            :show-image="false"
-            @add-to-cart="cartStore.addToCart"
+          v-for="product in cartStore.cartList"
+          :key="product.id"
+          :product="product"
+          :show-image="false"
+          @add-to-cart="productAddHandler"
+          @remove-from-cart="productRemoveHandler"
         />
       </transition-group>
     </div>
@@ -68,6 +87,7 @@ const totalPriceText = computed<string>(() => `${cartStore.totalPrice.toLocaleSt
 }
 
 .mini-cart {
+  overflow: hidden;
   &__list {
     display: flex;
     flex-direction: column;

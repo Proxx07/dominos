@@ -29,7 +29,7 @@ export const useCartStore = defineStore('cart', () => {
   });
 
   const removeFromCart = (id: string) => {
-    cartStorage.value = cartStorage.value.filter(item => item.id !== id)
+    cartStorage.value = cartStorageList.value.filter(item => item.id !== id)
   }
 
   const addToCart = (product: ICartItem) => {

@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'addToCart', value: ICartItem)
+  (e: 'removeFromCart', id: string)
 }>();
 
 const amount = computed({
@@ -35,6 +36,15 @@ const price = computed(() => props.product.price.toLocaleString().replace(',', '
 
         <div class="cart-product__details-name">
           {{product.name}}
+
+          <Button
+            icon="pi pi-times"
+            severity="danger"
+            text
+            rounded
+            style="margin-left: auto"
+            @click="emit('removeFromCart', product.id)"
+          />
         </div>
 
         <div v-if="product.description" class="cart-product__details-description">
@@ -86,11 +96,13 @@ const price = computed(() => props.product.price.toLocaleString().replace(',', '
     max-width: 32rem;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: .5rem;
     width: 100%;
     &-name {
       font: var(--font-14-b);
       color: var(--primary-900);
+      display: flex;
+      align-items: center;
     }
 
     &-description {
@@ -103,6 +115,7 @@ const price = computed(() => props.product.price.toLocaleString().replace(',', '
       align-items: center;
       gap: 1rem;
       width: 100%;
+      padding-top: 1rem;
     }
 
     &-price {
