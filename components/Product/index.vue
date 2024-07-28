@@ -93,6 +93,9 @@ const cartProdAmount = computed({
         {{ thisProduct?.price }} сум.
       </div>
       <client-only>
+        <template #fallback>
+          <Skeleton width="11rem" height="3.8rem"/>
+        </template>
         <Button
           v-if="!cartProdAmount"
           severity="secondary"
@@ -101,12 +104,13 @@ const cartProdAmount = computed({
           @click="addToCart(thisProduct)"
         />
 
-        <input-number v-else v-model="cartProdAmount" inputId="horizontal-buttons" showButtons buttonLayout="horizontal">
-          <template #incrementbuttonicon>
-            <span class="pi pi-plus" />
-          </template>
+        <input-number v-else v-model="cartProdAmount" showButtons :useGrouping="false" buttonLayout="horizontal" class="amount" :min="0" :max="999">
           <template #decrementbuttonicon>
-            <span class="pi pi-minus" />
+            <i class="pi pi-minus"/>
+          </template>
+
+          <template #incrementbuttonicon>
+            <i class="pi pi-plus"/>
           </template>
         </input-number>
       </client-only>

@@ -18,6 +18,7 @@
   min-height: 76rem;
   padding-bottom: 10rem;
   overflow-x: hidden;
+  padding-top: 1.5rem;
   @media all and (max-width: 1024px) {
     padding-bottom: 5rem;
   }

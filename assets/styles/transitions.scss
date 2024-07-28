@@ -52,6 +52,7 @@
 
 .slideY-enter-active,
 .slideY-leave-active {
+  position: absolute;
   transition: var(--transition-slow);
 }
 

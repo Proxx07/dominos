@@ -84,8 +84,11 @@ export interface IProcessedResponse {
   error?: string
 }
 
-
 export interface ICartItem {
   id: string,
+  amount: number
+}
+
+export interface IProductInCart extends IProduct{
   amount: number
 }

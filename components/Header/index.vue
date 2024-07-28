@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { cart, logo, phone, timer } from '~/assets/images';
+import { logo, phone, timer } from '~/assets/images';
 import { useNavigation } from '~/composables/useNavigation';
 
 const { NavigationPages } = useNavigation();
 
 const phoneNumber = 7717;
-const options = ref(['Ташкент']);
-const city = ref('Ташкент');
-const localePath = useLocalePath();
 
+const localePath = useLocalePath();
 const menuStore = useMenuStore();
+
 </script>
 
 <template>
@@ -39,11 +38,13 @@ const menuStore = useMenuStore();
     </div>
     <div class="header__menu container">
       <navigation :folders="menuStore.folders" :pages="NavigationPages" class="navigation" />
-      <Button icon="pi pi-shopping-cart" severity="secondary" class="cart-button" label="Корзина 0 сум">
-        <template #icon>
-          <icon :icon="cart" />
+
+      <client-only >
+        <mini-cart/>
+        <template #fallback>
+          <Skeleton width="13rem" height="4.5rem"/>
         </template>
-      </Button>
+      </client-only>
     </div>
   </header>
 </template>
@@ -55,7 +56,6 @@ const menuStore = useMenuStore();
   grid-template-columns: 1fr;
   gap: 4rem;
   background: var(--white);
-  margin-bottom: 1.5rem;
   &__top {
     width: 100%;
     display: grid;
@@ -67,9 +67,6 @@ const menuStore = useMenuStore();
     display: flex;
     .navigation {
       flex-grow: 1;
-    }
-    .cart-button {
-      min-width: 13rem;
     }
   }
 }

@@ -1,5 +1,5 @@
 export const useLocationModalStore = defineStore('location-modal', () => {
-  const opened = ref<boolean>(true);
+  const opened = ref<boolean>(false);
 
   const open = () => {
     opened.value = true
