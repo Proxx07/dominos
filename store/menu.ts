@@ -1,4 +1,4 @@
-import type { ICategory, IProcessedProduct, IProduct } from '~/composables/useShopData/types';
+import type { ICategory, IProcessedProduct, IProcessedResponse, IProduct } from '~/composables/useShopData/types';
 
 export const useMenuStore = defineStore('menu-store', () => {
   const $route = useRoute();
@@ -21,6 +21,12 @@ export const useMenuStore = defineStore('menu-store', () => {
     return [...products.value].filter(product => currentFolder.value.id === product.parentId);
   });
 
+  const setMenu = (data: IProcessedResponse) => {
+    folders.value = data?.folders ?? [];
+    products.value = data?.products ?? [];
+    productsForCart.value = data?.productsForCart ?? [];
+  };
+
   return {
     folders,
     products,
@@ -30,5 +36,7 @@ export const useMenuStore = defineStore('menu-store', () => {
     currentFolder,
 
     productsForCart,
+
+    setMenu,
   };
 });

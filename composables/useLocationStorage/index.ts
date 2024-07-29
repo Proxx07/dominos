@@ -25,6 +25,8 @@ export function useLocationStorage() {
 
   const existLocations = computed(() => addressList.value.map(loc => loc.coordinates.join()));
 
+  const isLocationSaved = computed<boolean>(() => location.value.Latitude > 0 && location.value.Longitude > 0);
+
   const pushNewAddress = (value: IMarker) => {
     if (existLocations.value.includes(value.coordinates.join())) return;
     addressList.value.push(value);
@@ -34,6 +36,8 @@ export function useLocationStorage() {
     location,
     setLocationCoords,
     setLocationFromMarker,
+
+    isLocationSaved,
 
     addressList,
     pushNewAddress,

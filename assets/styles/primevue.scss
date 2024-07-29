@@ -155,8 +155,12 @@
 }
 
 .p-inputtext {
+  font: var(--font-14-n);
   --p-inputtext-border-color-hover-border-color: var(--primary-100);
   --p-inputtext-border-color-active-border-color: var(--primary-100);
+}
+.p-inputgroupaddon {
+  color: var(--accent-text);
 }
 
 .p-popover {

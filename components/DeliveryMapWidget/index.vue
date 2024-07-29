@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import  { useMenu } from '~/composables/useMenu';
+import { useMenu } from '~/composables/useMenu';
 import type { IEmits } from '~/composables/useMenu/types';
 
 const emit = defineEmits<IEmits>();
@@ -8,7 +8,7 @@ const {
   loading,
   addressList, setAddress, addressMatchError, getRestaurants,
   markerCenterCoords, currentMarker, restMarksList, mapMoveHandler,
-  activeDelivery, deliveryList, addressSelectHandle, submitMapHandler,
+  activeDelivery, isDelivery, deliveryList, addressSelectHandle, submitMapHandler,
 } = useMenu(emit);
 
 const mapHeight = 500;
@@ -32,7 +32,7 @@ onMounted(() => {
       />
       <div class="delivery-body">
         <Transition name="slideX">
-          <div v-if="activeDelivery === 0" class="delivery-item">
+          <div v-if="isDelivery" class="delivery-item">
             <list-with-search
               :title="$t('map.delivery-title')"
               :subtitle="$t('map.delivery-subtitle')"
@@ -48,7 +48,7 @@ onMounted(() => {
         </Transition>
 
         <Transition name="slideX">
-          <div v-if="activeDelivery === 1" class="delivery-item">
+          <div v-if="!isDelivery" class="delivery-item">
             <list-with-search
               :title="$t('map.self-delivery-title')"
               :subtitle="$t('map.self-delivery-subtitle')"

@@ -22,7 +22,9 @@
 .fade-leave-active {
   transition: var(--transition-fast);
 }
-
+.fade-leave-active {
+  position: absolute;
+}
 .fade-enter-from {
   opacity: 0;
   transform: scale(0.9);
@@ -52,10 +54,12 @@
 
 .slideY-enter-active,
 .slideY-leave-active {
-  position: absolute;
   transition: var(--transition-slow);
 }
-
+.slideY-leave-active {
+  position: absolute;
+  z-index: -1;
+}
 .slideY-enter-from {
   opacity: 0;
   transform: translateY(100%);

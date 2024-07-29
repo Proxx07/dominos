@@ -1,7 +1,6 @@
 import type { EventHandlerRequest, H3Event } from 'h3';
 import { setCookie } from 'h3';
 
-
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) => {
   const runtimeConfig = useRuntimeConfig();
 
@@ -13,5 +12,5 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     },
   });
   setCookie(event, 'token', token);
-  return {token}
+  return { token };
 });

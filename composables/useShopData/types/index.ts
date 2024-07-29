@@ -85,10 +85,10 @@ export interface IProcessedResponse {
 }
 
 export interface ICartItem {
-  id: string,
+  id: string
   amount: number
 }
 
-export interface IProductInCart extends IProduct{
+export interface IProductInCart extends IProduct {
   amount: number
 }

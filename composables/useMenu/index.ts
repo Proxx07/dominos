@@ -6,9 +6,9 @@ import type { IMarker } from '~/composables/useLocationStorage/types';
 import type { IProcessedResponse } from '~/composables/useShopData/types';
 
 export function useMenu(emit?: IEmits) {
-  const menuStore = useMenuStore();
   const $toast = useToastStore();
-  const { location, addressList, setLocationCoords, setLocationFromMarker, pushNewAddress } = useLocationStorage();
+  const menuStore = useMenuStore();
+  const { location, addressList, isLocationSaved, setLocationCoords, setLocationFromMarker, pushNewAddress } = useLocationStorage();
 
   const {
     markerCenterCoords,
@@ -55,6 +55,7 @@ export function useMenu(emit?: IEmits) {
     return {
       ...location.value,
       RestaurantId: isDelivery.value ? '' : location.value.RestaurantId,
+      OrderTypeId: activeDelivery.value,
     };
   });
 
@@ -66,13 +67,17 @@ export function useMenu(emit?: IEmits) {
     }
 
     loading.value = true;
-    const { data, error } = await useFetch<IProcessedResponse>('/api/shop', { query: query.value });
+    const { data, error } = await useFetch<IProcessedResponse>('/api/shop', { query: query.value, server: false });
     loading.value = false;
 
     if (error.value || data.value?.error) {
       if (data.value?.error) return $toast.error('error.title', data.value.error);
       return $toast.error('error.title', 'error.fetch-error');
     }
+
+    menuStore.folders = data.value?.folders ?? [];
+    menuStore.products = data.value?.products ?? [];
+    menuStore.productsForCart = data.value?.productsForCart ?? [];
 
     if (isDelivery.value && currentMarker.value) {
       loading.value = true;
@@ -87,12 +92,13 @@ export function useMenu(emit?: IEmits) {
   };
 
   return {
-    location, addressList, setLocationCoords, setLocationFromMarker, pushNewAddress,
+    location, addressList, isLocationSaved,
+    setLocationCoords, setLocationFromMarker, pushNewAddress,
 
-    markerCenterCoords, currentMarker, restMarksList, getRestaurants,
-    addressMatchError,
+    markerCenterCoords, currentMarker, restMarksList,
+    getRestaurants, addressMatchError,
 
-    activeDelivery, deliveryList, addressSelectHandle, setAddress, submitMapHandler,
+    activeDelivery, isDelivery, deliveryList, addressSelectHandle, setAddress, submitMapHandler,
 
     loading, mapMoveHandler,
   };

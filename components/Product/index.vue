@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type {ICartItem, IProcessedProduct, IProduct} from '~/composables/useShopData/types';
+import type { ICartItem, IProcessedProduct, IProduct } from '~/composables/useShopData/types';
 
 const props = defineProps<{
   product: IProcessedProduct
 }>();
 
 const emit = defineEmits<{
-  (e: 'addToCart', value: ICartItem)
+  (e: 'addToCart', value: ICartItem): void
 }>();
 
 const menuStore = useMenuStore();
@@ -41,18 +41,18 @@ const thisProduct = computed<IProduct>(() => {
   return menuStore.productsForCart.filter(prod => prod.subCategory?.id === props.product.id)[0];
 });
 
-const addToCart = (value: IProduct, amount?: number) => {
-  emit('addToCart', {id: value.id, amount: amount ?? 1});
+function addToCart(value: IProduct, amount?: number) {
+  emit('addToCart', { id: value.id, amount: amount ?? 1 });
 }
 
-const cartProdAmount = computed({
+const cartProdAmount = computed<number>({
   get() {
-    return cartStore.cartStorageList.find(prod => thisProduct.value.id === prod.id)?.amount
+    return cartStore.cartStorageList.find(prod => thisProduct.value.id === prod.id)?.amount ?? 0;
   },
 
   set(amount: number) {
-    addToCart(thisProduct.value, amount)
-  }
+    addToCart(thisProduct.value, amount);
+  },
 });
 </script>
 
@@ -94,7 +94,7 @@ const cartProdAmount = computed({
       </div>
       <client-only>
         <template #fallback>
-          <Skeleton width="11rem" height="3.8rem"/>
+          <Skeleton width="11rem" height="3.8rem" />
         </template>
         <Button
           v-if="!cartProdAmount"
@@ -104,13 +104,13 @@ const cartProdAmount = computed({
           @click="addToCart(thisProduct)"
         />
 
-        <input-number v-else v-model="cartProdAmount" showButtons :useGrouping="false" buttonLayout="horizontal" class="amount" :min="0" :max="999">
+        <input-number v-else v-model="cartProdAmount" show-buttons :use-grouping="false" button-layout="horizontal" class="amount" :min="0" :max="999">
           <template #decrementbuttonicon>
-            <i class="pi pi-minus"/>
+            <i class="pi pi-minus" />
           </template>
 
           <template #incrementbuttonicon>
-            <i class="pi pi-plus"/>
+            <i class="pi pi-plus" />
           </template>
         </input-number>
       </client-only>

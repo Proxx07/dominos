@@ -8,7 +8,6 @@ const phoneNumber = 7717;
 
 const localePath = useLocalePath();
 const menuStore = useMenuStore();
-
 </script>
 
 <template>
@@ -39,10 +38,10 @@ const menuStore = useMenuStore();
     <div class="header__menu container">
       <navigation :folders="menuStore.folders" :pages="NavigationPages" class="navigation" />
 
-      <client-only >
-        <mini-cart/>
+      <client-only>
+        <mini-cart />
         <template #fallback>
-          <Skeleton width="13rem" height="4.5rem"/>
+          <Skeleton width="13rem" height="4.5rem" />
         </template>
       </client-only>
     </div>

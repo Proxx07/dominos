@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const modalsStore = useLocationModalStore();
+</script>
 
 <template>
   <div class="site-wrapper">
@@ -9,6 +11,10 @@
     </main>
 
     <Footer />
+
+    <Dialog v-model:visible="modalsStore.authModal" class="sm auth-dialog" modal :draggable="false" header="Регистрация">
+      <auth-form />
+    </Dialog>
   </div>
 </template>
 

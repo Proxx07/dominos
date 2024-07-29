@@ -1,17 +1,30 @@
 export const useLocationModalStore = defineStore('location-modal', () => {
-  const opened = ref<boolean>(false);
+  const locationModal = ref<boolean>(false);
 
-  const open = () => {
-    opened.value = true
-  }
+  const openLocationModal = () => {
+    locationModal.value = true;
+  };
 
-  const close = () => {
-    opened.value = false
-  }
+  const closeLocationModal = () => {
+    locationModal.value = false;
+  };
 
+  const authModal = ref<boolean>(false);
+
+  const openAuthModal = () => {
+    authModal.value = true;
+  };
+
+  const closeAuthModal = () => {
+    authModal.value = false;
+  };
   return {
-    opened,
-    open,
-    close
-  }
+    locationModal,
+    openLocationModal,
+    closeLocationModal,
+
+    authModal,
+    openAuthModal,
+    closeAuthModal,
+  };
 });

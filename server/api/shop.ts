@@ -67,5 +67,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     error: result?.error || '',
   };
 
+  setCookie(event, 'token', token);
+
   return response;
 });

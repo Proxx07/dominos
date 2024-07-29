@@ -8,6 +8,6 @@ export const deliveries: IDelivery[] = [
 
   {
     name: 'map.self-delivery',
-    value: 1,
+    value: 200,
   },
 ];
