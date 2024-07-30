@@ -7,19 +7,16 @@ export function useAuth() {
 
   const code = ref<string>('+998');
   const number = ref<string>('');
+  const phone = computed<string>(() => {
+    return code.value + (number.value.replace(/ /g, '').match(/\d+/g)?.join('') ?? '')
+  });
+
   const name = ref<string>('');
   const sms = ref<string>('');
 
-  const phoneError = ref<boolean>(false);
   const nameError = ref<boolean>(false);
-
+  const phoneError = ref<boolean>(false);
   const codeError = ref<boolean>(false);
-
-  const reqBody = computed<ISmsBody>(() => {
-    return {
-      phone: (code.value + number.value.replace(/ /g, '')),
-    };
-  });
 
   const customerId = ref<string>('');
   const smsRequestError = ref<boolean>(false);
@@ -29,7 +26,7 @@ export function useAuth() {
       const result = await $request<ISmsResponse>('/api/sms/Send', {
         method: 'POST',
         body: {
-          phone: reqBody.value.phone.match(/\d+/g)?.join(''),
+          phone: phone.value,
         },
       });
       smsRequestError.value = false;
@@ -47,7 +44,7 @@ export function useAuth() {
     }
   };
 
-  const confirmSms = async () => {
+  const confirmSMS = async () => {
     try {
       const result = await $request<ISmsResponse>('/api/sms/Confirm', {
         method: 'POST',
@@ -55,14 +52,14 @@ export function useAuth() {
           sms: sms.value,
         },
       });
-      smsRequestError.value = false;
+      codeError.value = false;
       console.log(result);
     }
 
     catch (e: any) {
-      smsRequestError.value = true;
+      codeError.value = true;
       if (e.data.error) {
-        $toast.error('error.title', e.data.error);
+        $toast.error('error.title', 'Код неверный');
       }
       else {
         $toast.error('error.title', 'error.server-error');
@@ -71,30 +68,20 @@ export function useAuth() {
   };
 
   function handleError() {
-    phoneError.value = reqBody.value.phone.length !== 17;
+    phoneError.value = phone.value.length !== 13;
     nameError.value = !name.value;
-
-    if (sms.value) {
-      codeError.value = !sms.value;
-    }
+    codeError.value = sms.value.length < 4;
   }
 
-  const isDisabled = computed(() => step.value === 0 ? phoneError.value || nameError.value : codeError.value && sms.value.length < 4);
+  const isDisabled = computed(() => step.value === 0 ? phoneError.value || nameError.value : sms.value.length < 4);
 
   return {
     step,
-    code,
-    number,
+    code, number, phone, name, sms,
+    phoneError, nameError, codeError,
 
-    name,
-    sms,
-    phoneError,
-    nameError,
-    codeError,
-    isDisabled,
-    smsRequestError,
-    handleError,
-    sendSMS,
-    confirmSms,
+    isDisabled, smsRequestError,
+
+    handleError, sendSMS, confirmSMS,
   };
 }

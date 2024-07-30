@@ -2,10 +2,10 @@
 import { useAuth } from '~/composables/useAuth';
 
 const {
-  step, code, number, name, sms, isDisabled,
-  phoneError, nameError, codeError,
+  step, code, name, sms, isDisabled, phone,
+  phoneError, nameError, codeError, number,
   sendSMS, handleError, smsRequestError,
-  confirmSms,
+  confirmSMS,
 } = useAuth();
 
 async function submitHandler() {
@@ -17,7 +17,8 @@ async function submitHandler() {
     step.value++;
   }
   else {
-    await confirmSms(); // need body
+    await confirmSMS(); // need body
+    if (codeError.value) return
   }
 }
 </script>
@@ -59,14 +60,15 @@ async function submitHandler() {
     <Transition name="slideX">
       <div v-if="step === 1" class="auth-content">
         <div class="auth__subtitle">
-          Введите sms код отправленный на номер: {{ phoneNumber }}
+          Введите sms код отправленный на номер: {{ phone }}
         </div>
 
         <div class="field sms">
-          <label class="field-title"> Введите ваше имя </label>
-          <input-text
+          <label class="field-title"> Ваш код </label>
+          <input-mask
             v-model="sms"
-            placeholder="Введите sms код"
+            mask="9999"
+            placeholder="####"
             :invalid="codeError"
             fluid
             @blur="handleError"
