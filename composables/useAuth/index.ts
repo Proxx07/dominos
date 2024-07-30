@@ -22,7 +22,7 @@ export function useAuth() {
   });
 
   const customerId = ref<string>('');
-  const requestError = ref<boolean>(false);
+  const smsRequestError = ref<boolean>(false);
 
   const sendSMS = async () => {
     try {
@@ -32,12 +32,35 @@ export function useAuth() {
           phone: reqBody.value.phone.match(/\d+/g)?.join(''),
         },
       });
-      requestError.value = false;
+      smsRequestError.value = false;
       customerId.value = result.customerId;
     }
 
     catch (e: any) {
-      requestError.value = true;
+      smsRequestError.value = true;
+      if (e.data.error) {
+        $toast.error('error.title', e.data.error);
+      }
+      else {
+        $toast.error('error.title', 'error.server-error');
+      }
+    }
+  };
+
+  const confirmSms = async () => {
+    try {
+      const result = await $request<ISmsResponse>('/api/sms/Confirm', {
+        method: 'POST',
+        body: {
+          sms: sms.value,
+        },
+      });
+      smsRequestError.value = false;
+      console.log(result);
+    }
+
+    catch (e: any) {
+      smsRequestError.value = true;
       if (e.data.error) {
         $toast.error('error.title', e.data.error);
       }
@@ -56,7 +79,7 @@ export function useAuth() {
     }
   }
 
-  const isDisabled = computed(() => step.value === 0 ? phoneError.value || nameError.value : codeError.value && !!sms.value);
+  const isDisabled = computed(() => step.value === 0 ? phoneError.value || nameError.value : codeError.value && sms.value.length < 4);
 
   return {
     step,
@@ -69,7 +92,9 @@ export function useAuth() {
     nameError,
     codeError,
     isDisabled,
+    smsRequestError,
     handleError,
     sendSMS,
+    confirmSms,
   };
 }

@@ -2,9 +2,10 @@
 import { useAuth } from '~/composables/useAuth';
 
 const {
-  step, code, number, name, sms,
+  step, code, number, name, sms, isDisabled,
   phoneError, nameError, codeError,
-  sendSMS, handleError, isDisabled,
+  sendSMS, handleError, smsRequestError,
+  confirmSms,
 } = useAuth();
 
 async function submitHandler() {
@@ -12,10 +13,11 @@ async function submitHandler() {
     handleError();
     if (isDisabled.value) return;
     await sendSMS();
+    if (smsRequestError.value) return;
     step.value++;
   }
   else {
-    step.value--;
+    await confirmSms(); // need body
   }
 }
 </script>
