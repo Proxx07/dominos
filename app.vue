@@ -31,5 +31,7 @@ onMounted(() => {
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-  <Toast />
+  <client-only>
+    <Toast />
+  </client-only>
 </template>

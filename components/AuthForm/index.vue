@@ -2,7 +2,7 @@
 import { useAuth } from '~/composables/useAuth';
 
 const {
-  step, code, number, name, sms, phoneNumber,
+  step, code, number, name, sms,
   phoneError, nameError, codeError,
   sendSMS, handleError, isDisabled,
 } = useAuth();

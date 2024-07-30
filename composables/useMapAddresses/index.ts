@@ -1,11 +1,11 @@
 import type { IRestaurant } from './types';
 import { setMarkerFromRestaurant, setRestaurant } from './models';
 import type { IMarker } from '~/composables/useLocationStorage/types';
-import $request from '~/api';
 import { useToastStore } from '~/store/toasts';
 
 export function useMapAddresses() {
   const $toast = useToastStore();
+  const { $request } = useNuxtApp();
   const mapCoords = ref <[number, number]>();
   const markerCenterCoords = ref<[number, number]>();
 
