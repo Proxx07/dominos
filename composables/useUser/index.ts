@@ -57,6 +57,8 @@ export function useUser() {
   return {
     userID,
     user,
+    loading,
+    error,
     getUser,
     createUser,
   };

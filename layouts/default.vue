@@ -1,5 +1,16 @@
 <script setup lang="ts">
+import { useUser } from '~/composables/useUser';
+import type { IUser } from '~/composables/useUser/types';
+
 const modalsStore = useLocationModalStore();
+
+const { user, getUser, createUser } = useUser();
+
+async function handleSubmit(val: IUser) {
+  user.value = val;
+  await createUser();
+  // modalsStore.closeAuthModal();
+}
 </script>
 
 <template>
@@ -13,7 +24,7 @@ const modalsStore = useLocationModalStore();
     <Footer />
 
     <Dialog v-model:visible="modalsStore.authModal" class="sm auth-dialog" modal :draggable="false" header="Регистрация">
-      <auth-form />
+      <auth-form @submitted="handleSubmit" />
     </Dialog>
   </div>
 </template>

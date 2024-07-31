@@ -1,6 +1,6 @@
 import { useUserStore } from '~/store/user';
 
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware(async () => {
   if (import.meta.server) return;
 
   const userStore = useUserStore();

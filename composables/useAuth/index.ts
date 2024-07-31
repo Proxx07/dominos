@@ -1,4 +1,4 @@
-import type { ISmsBody, ISmsResponse } from './types';
+import type { ISmsResponse } from './types';
 
 export function useAuth() {
   const $toast = useToastStore();
@@ -8,7 +8,7 @@ export function useAuth() {
   const code = ref<string>('+998');
   const number = ref<string>('');
   const phone = computed<string>(() => {
-    return code.value + (number.value.replace(/ /g, '').match(/\d+/g)?.join('') ?? '')
+    return code.value + (number.value.replace(/ /g, '').match(/\d+/g)?.join('') ?? '');
   });
 
   const name = ref<string>('');
@@ -30,7 +30,7 @@ export function useAuth() {
         },
       });
       smsRequestError.value = false;
-      customerId.value = result.customerId;
+      customerId.value = result.customerId ?? '';
     }
 
     catch (e: any) {
@@ -46,20 +46,21 @@ export function useAuth() {
 
   const confirmSMS = async () => {
     try {
-      const result = await $request<ISmsResponse>('/api/sms/Confirm', {
+      await $request<ISmsResponse>('/api/sms/Confirm', {
         method: 'POST',
         body: {
-          sms: sms.value,
+          ...(customerId.value && { customerId: customerId.value }),
+          phone: phone.value,
+          confirmCode: sms.value,
         },
       });
       codeError.value = false;
-      console.log(result);
     }
 
     catch (e: any) {
       codeError.value = true;
       if (e.data.error) {
-        $toast.error('error.title', 'Код неверный');
+        $toast.error('error.title', e.data.error);
       }
       else {
         $toast.error('error.title', 'error.server-error');
@@ -76,7 +77,7 @@ export function useAuth() {
   const isDisabled = computed(() => step.value === 0 ? phoneError.value || nameError.value : sms.value.length < 4);
 
   return {
-    step,
+    step, customerId,
     code, number, phone, name, sms,
     phoneError, nameError, codeError,
 

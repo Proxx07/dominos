@@ -22,7 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       if (method === 'post' && options.body?.hasOwnProperty) {
         const body = options?.body ? options.body : {};
         options.body = {
-          Language: ln[(locale?.value ?? 'ru') as LangTypes],
+          language: ln[(locale?.value ?? 'ru') as LangTypes],
           ...body as object,
         };
       }

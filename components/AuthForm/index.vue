@@ -1,12 +1,28 @@
 <script setup lang="ts">
 import { useAuth } from '~/composables/useAuth';
+import { useTimer } from '~/composables/useTimer';
+import type { IUser } from '~/composables/useUser/types';
+import { setUser } from '~/composables/useUser/models';
+
+const emit = defineEmits<{
+  (e: 'submitted', user: IUser): void
+}>();
 
 const {
-  step, code, name, sms, isDisabled, phone,
+  step, code, name, sms, isDisabled, phone, customerId,
   phoneError, nameError, codeError, number,
   sendSMS, handleError, smsRequestError,
   confirmSMS,
 } = useAuth();
+
+const { timer, timerView, setTimer } = useTimer();
+
+async function requestCode() {
+  if (timer.value) return;
+  await sendSMS();
+  if (smsRequestError.value) return;
+  setTimer(120);
+}
 
 async function submitHandler() {
   if (step.value === 0) {
@@ -15,10 +31,17 @@ async function submitHandler() {
     await sendSMS();
     if (smsRequestError.value) return;
     step.value++;
+    setTimer(120);
   }
   else {
-    await confirmSMS(); // need body
-    if (codeError.value) return
+    await confirmSMS();
+    if (codeError.value) return;
+
+    emit('submitted', setUser({
+      id: customerId.value,
+      firstName: name.value,
+      phone1: phone.value,
+    }));
   }
 }
 </script>
@@ -73,6 +96,13 @@ async function submitHandler() {
             fluid
             @blur="handleError"
           />
+        </div>
+
+        <div class="resend-sms">
+          <Button v-if="!timer" label="Запросить повторно" text @click="requestCode" />
+          <template v-else>
+            Запросить повторно код вы сможете через {{ timerView }}
+          </template>
         </div>
       </div>
     </Transition>
