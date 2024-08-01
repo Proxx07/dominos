@@ -26,7 +26,7 @@ export function useAuth() {
       const result = await $request<ISmsResponse>('/api/sms/Send', {
         method: 'POST',
         body: {
-          phone: phone.value,
+          phone: phone.value.substring(1),
         },
       });
       smsRequestError.value = false;
@@ -49,7 +49,6 @@ export function useAuth() {
       await $request<ISmsResponse>('/api/sms/Confirm', {
         method: 'POST',
         body: {
-          ...(customerId.value && { customerId: customerId.value }),
           phone: phone.value,
           confirmCode: sms.value,
         },

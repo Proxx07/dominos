@@ -4,20 +4,25 @@ import { setUser } from './models';
 export function useUser() {
   const { $request } = useNuxtApp();
   const $toast = useToastStore();
+  const $confirm = useConfirm();
+  const userStore = useUserStore();
 
   const userID = useLocalStorage<string>('user-id', '');
+
   const user = ref<IUser>(setUser());
 
   const loading = ref<boolean>(false);
   const error = ref<boolean>(false);
 
   const getUser = async () => {
-    if (!userID.value) return;
+    if (!user.value.id) return;
     loading.value = true;
     try {
-      const result = $request('/api/customers/Get/', { query: { Id: userID.value } });
-      console.log(result);
+      const result = await $request<IUser>('/api/customers/Get/', { query: { Id: user.value.id } });
       error.value = false;
+      userID.value = result.id;
+      user.value = setUser(result);
+      userStore.user = setUser(result);
     }
     catch (e: any) {
       error.value = true;
@@ -36,8 +41,8 @@ export function useUser() {
   const createUser = async () => {
     loading.value = true;
     try {
-      const result = $request('/api/customers/Create/', { method: 'POST', body: user.value });
-      console.log(result);
+      const result = await $request<{ customerId: string }>('/api/customers/Create/', { method: 'POST', body: user.value });
+      user.value.id = result.customerId;
       error.value = false;
     }
     catch (e: any) {
@@ -54,6 +59,39 @@ export function useUser() {
     }
   };
 
+  const resetUser = () => {
+    userStore.user = setUser();
+    userID.value = '';
+    user.value = setUser();
+  };
+
+  const logOut = () => {
+    $confirm.require({
+      message: 'Вы действительно хотите выйти из аккаунта?',
+      header: 'Уточните!',
+      rejectProps: {
+        label: 'Отменить',
+        severity: 'primary',
+      },
+      acceptProps: {
+        label: 'Выйти',
+        severity: 'secondary',
+      },
+
+      accept: () => {
+        resetUser();
+        $toast.info('Вы вышли из аккаунта');
+      },
+    });
+  };
+
+  onMounted(() => {
+    if (userID.value) {
+      user.value.id = userID.value;
+      getUser();
+    }
+  });
+
   return {
     userID,
     user,
@@ -61,5 +99,8 @@ export function useUser() {
     error,
     getUser,
     createUser,
+
+    logOut,
+    resetUser,
   };
 }

@@ -1,14 +1,11 @@
-import { useUserStore } from '~/store/user';
-
-export default defineNuxtRouteMiddleware(async () => {
+export default defineNuxtRouteMiddleware(() => {
   if (import.meta.server) return;
-
-  const userStore = useUserStore();
+  const isAuth = localStorage.getItem('user-id');
   const modalsStore = useLocationModalStore();
 
-  if (!userStore.user?.id) {
+  if (!isAuth) {
     modalsStore.openAuthModal();
-    return abortNavigation();
+    return navigateTo('/');
   }
   return true;
 });

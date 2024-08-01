@@ -1,13 +1,34 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { logo, phone, timer } from '~/assets/images';
 import { useNavigation } from '~/composables/useNavigation';
+import type { IUser } from '~/composables/useUser/types';
+
+const props = defineProps<{
+  user?: IUser
+}>();
+
+const emit = defineEmits<{
+  (e: 'login'): void
+  (e: 'logout'): void
+}>();
+
+const { t } = useI18n({ useScope: 'global' });
 
 const { NavigationPages } = useNavigation();
-
 const phoneNumber = 7717;
-
 const localePath = useLocalePath();
 const menuStore = useMenuStore();
+
+function handleLogin() {
+  if (props.user?.id) {
+    emit('logout');
+    return;
+  }
+  emit('login');
+}
+
+const buttonText = computed(() => props.user?.firstName ? props.user?.firstName : t('header.login'));
 </script>
 
 <template>
@@ -32,7 +53,12 @@ const menuStore = useMenuStore();
       <div class="header-right">
         <lang-switcher />
 
-        <Button :label="$t('header.login')" class="login" />
+        <client-only>
+          <Button :label="buttonText" class="login" @click="handleLogin" />
+          <template #fallback>
+            <Skeleton width="11rem" height="4rem" />
+          </template>
+        </client-only>
       </div>
     </div>
     <div class="header__menu container">

@@ -2,10 +2,13 @@
 import { useAuth } from '~/composables/useAuth';
 import { useTimer } from '~/composables/useTimer';
 import type { IUser } from '~/composables/useUser/types';
-import { setUser } from '~/composables/useUser/models';
+
+defineProps<{
+  loading: boolean
+}>();
 
 const emit = defineEmits<{
-  (e: 'submitted', user: IUser): void
+  (e: 'submitted', user: Partial<IUser>): void
 }>();
 
 const {
@@ -17,6 +20,11 @@ const {
 
 const { timer, timerView, setTimer } = useTimer();
 
+const confrmationButtonDisable = computed(() => {
+  if (step.value === 1) return isDisabled.value;
+  return timer.value > 0 || isDisabled.value;
+});
+
 async function requestCode() {
   if (timer.value) return;
   await sendSMS();
@@ -27,21 +35,21 @@ async function requestCode() {
 async function submitHandler() {
   if (step.value === 0) {
     handleError();
-    if (isDisabled.value) return;
+    if (isDisabled.value || timer.value) return;
     await sendSMS();
     if (smsRequestError.value) return;
-    step.value++;
+    step.value = 1;
     setTimer(120);
   }
   else {
     await confirmSMS();
     if (codeError.value) return;
 
-    emit('submitted', setUser({
+    emit('submitted', {
       id: customerId.value,
       firstName: name.value,
       phone1: phone.value,
-    }));
+    });
   }
 }
 </script>
@@ -97,17 +105,26 @@ async function submitHandler() {
             @blur="handleError"
           />
         </div>
-
-        <div class="resend-sms">
-          <Button v-if="!timer" label="Запросить повторно" text @click="requestCode" />
-          <template v-else>
-            Запросить повторно код вы сможете через {{ timerView }}
-          </template>
-        </div>
       </div>
     </Transition>
     <div class="auth__footer">
-      <Button class="field button" label="Отправить" :disabled="isDisabled" fluid @click="submitHandler" />
+      <div class="resend-sms">
+        <Button v-if="!timer && step === 1" label="Запросить повторно" text @click="requestCode" />
+        <template v-if="timer">
+          Запросить повторно код вы сможете через {{ timerView }}
+        </template>
+        <Button v-if="step === 1" label="Назад" severity="secondary" style="min-width: 7rem" @click="step = 0" />
+      </div>
+
+      <Button
+        class="field button"
+        label="Отправить"
+        :disabled="confrmationButtonDisable || loading"
+        :loading="loading"
+        loading-icon="pi pi-spin pi-spinner-dotted"
+        fluid
+        @click="submitHandler"
+      />
     </div>
   </div>
 </template>
@@ -132,7 +149,7 @@ async function submitHandler() {
     font: var(--font-16-n);
     color: var(--accent-text);
     opacity: 0.7;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
   }
 
   &__footer {
@@ -147,5 +164,13 @@ async function submitHandler() {
     opacity: 0.8;
     margin-bottom: .5rem;
   }
+}
+
+.resend-sms {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.4rem;
 }
 </style>

@@ -115,6 +115,9 @@
 /*Dialog */
 .p-dialog {
   width: 100%;
+  &.xsm {
+    max-width: 31rem;
+  }
 
   &.sm {
     max-width: 64rem;

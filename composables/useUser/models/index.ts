@@ -10,7 +10,7 @@ export function setUser(user?: Partial<IUser>): IUser {
     phone2: user?.phone2 ?? '',
     email: user?.email ?? '',
     address: user?.address ?? '',
-    birthDate: user?.birthDate ?? '',
+    birthDate: new Date().toISOString().split('T')[0],
     // regionId?: number
     // language?: number
   };
