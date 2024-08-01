@@ -10,7 +10,6 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
-  "packageManager": "yarn@1.22.22",
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
     "@primevue/themes": "^4.0.0",
