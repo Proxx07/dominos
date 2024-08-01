@@ -4,8 +4,12 @@ import { useOrder } from '~/composables/useOrder';
 definePageMeta({
   middleware: 'order',
 });
+
+const cartStore = useCartStore();
+
 const { orderData } = useOrder();
 const { $request } = useNuxtApp();
+const $toast = useToastStore();
 
 async function req() {
   try {
@@ -13,16 +17,17 @@ async function req() {
       method: 'POST',
       body: orderData.value,
     });
-    console.log(res);
+    $toast.success('Заказ оформлен!', 'Ура');
+    cartStore.clearCart();
   }
-  catch (e) {}
+  catch (e: any) {
+    if (e.data.error) {
+      $toast.error('Не получилось оформить заказ!', e.data.error);
+      return;
+    }
+    $toast.error('Не получилось оформить заказ!', 'не знаю почем ');
+  }
 }
-
-onMounted(() => {
-  setTimeout(() => {
-    req();
-  }, 2000);
-});
 </script>
 
 <template>
@@ -31,12 +36,17 @@ onMounted(() => {
       Оформление заказа
     </h1>
 
-    <pre>
-      {{ orderData }}
-    </pre>
+    <Button class="order" @click="req">
+      Оформить заказ
+    </Button>
+    <client-only>
+      <pre style="padding-top: 20px;"> {{ orderData }} </pre>
+    </client-only>
   </div>
 </template>
 
 <style scoped lang="scss">
-
+.order {
+  font-size: 2rem;
+}
 </style>

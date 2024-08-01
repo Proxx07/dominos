@@ -47,6 +47,10 @@ export const useCartStore = defineStore('cart', () => {
     }
   };
 
+  const clearCart = () => {
+    cartStorage.value = [];
+  };
+
   return {
     cartList,
     cartStorageList,
@@ -55,5 +59,6 @@ export const useCartStore = defineStore('cart', () => {
 
     addToCart,
     removeFromCart,
+    clearCart,
   };
 });

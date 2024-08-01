@@ -35,16 +35,16 @@ export interface IOrder {
 }
 
 export interface IOrderData {
-  contactName: string
-  phone1: string
+  contactName: string // required
+  phone1: string // required
   phone2?: string
   paymentPhone: string
-  address: string
+  address: string // required
   addressComment: string
-  longitude: string
-  latitude: string
-  paymentTypeId: number
-  plannedDateTime: string
+  longitude: string // required
+  latitude: string // required
+  paymentTypeId: number // from reference-books
+  plannedDateTime: string | null//
   plannedDateType: number
   order: IOrder
 }

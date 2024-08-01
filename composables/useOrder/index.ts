@@ -14,12 +14,12 @@ export function useOrder() {
       contactName: userStore.user?.firstName ?? '',
       phone1: userStore.user?.phone1 ?? '',
       ...(userStore.user?.phone2 && { phone2: userStore.user.phone2 }),
-      address: '', // editable
+      address: 'test adress', // editable
       addressComment: '', // editable
-      longitude: location.value.Longitude,
-      latitude: location.value.Latitude,
+      longitude: `${location.value.Longitude}`,
+      latitude: `${location.value.Latitude}`,
       paymentTypeId: 0, // editable
-      plannedDateTime: '', // editable
+      plannedDateTime: null, // editable
       plannedDateType: 0, // editable
       order: {
         regionId: location.value.RegionId,
