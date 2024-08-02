@@ -45,12 +45,6 @@ function productHandler(product: ICartItem) {
         </transition-group>
       </div>
     </div>
-
-    <client-only>
-      <Dialog v-model:visible="modalStore.locationModal" class="md" modal :draggable="false" header="Выберите тип приема">
-        <delivery-map-widget @submit="modalStore.closeLocationModal" />
-      </Dialog>
-    </client-only>
   </div>
 </template>
 

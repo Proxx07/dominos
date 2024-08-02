@@ -59,7 +59,9 @@ const cartProdAmount = computed<number>({
 <template>
   <div v-if="thisProduct?.id" class="product">
     <div class="product__image">
-      <v-image :src="thisProduct.imageUrl" />
+      <v-image v-if="thisProduct.imageUrl" :src="thisProduct.imageUrl" />
+
+      <chip v-once :label="`от ${thisProduct.price} сум`" />
     </div>
 
     <div class="product__name">
@@ -71,12 +73,20 @@ const cartProdAmount = computed<number>({
     </div>
 
     <Select
-      v-if="product.modifiers?.length"
+      v-if="product.modifiers?.length && modifierOption.length"
       v-model="size"
       :options="product.modifiers"
       option-label="name"
       option-value="id"
       fluid
+    />
+
+    <product-modifiers
+      v-else-if="!modifierOption.length && product.modifiers?.length"
+      v-model="size"
+      :options="product.modifiers"
+      option-label="name"
+      option-value="id"
     />
 
     <div class="product__modifiers">

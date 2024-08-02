@@ -29,12 +29,12 @@ export function useOrder() {
         notes: '', // editable
         orderItems: cartStore.cartList.map(prod => ({ productId: prod.id, quantity: prod.amount, price: prod.price })),
         payByCard: 0, // editable
-        /* promo: {
+        promo: {
           promoId: 0,
           promoCode: '',
           discount: 0,
           view: 0,
-        }, */
+        },
       },
     };
   });

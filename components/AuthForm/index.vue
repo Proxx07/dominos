@@ -69,6 +69,7 @@ async function submitHandler() {
             placeholder="Введите ваше имя"
             :invalid="nameError"
             fluid
+            class="underlined"
             @blur="handleError"
           />
         </div>
@@ -76,12 +77,15 @@ async function submitHandler() {
         <div class="field phone">
           <label class="field-title"> Телефон </label>
           <input-group>
-            <input-group-addon>{{ code }}</input-group-addon>
+            <input-group-addon class="underlined">
+              {{ code }}
+            </input-group-addon>
             <input-mask
               v-model="number"
               mask="(99) 999-99-99"
               placeholder="(##) ###-##-##"
               :invalid="phoneError"
+              class="underlined"
               @blur="handleError"
             />
           </input-group>
@@ -98,6 +102,8 @@ async function submitHandler() {
           <label class="field-title"> Ваш код </label>
           <input-mask
             v-model="sms"
+            v-focus
+            class="underlined"
             mask="9999"
             placeholder="####"
             :invalid="codeError"
@@ -157,6 +163,7 @@ async function submitHandler() {
   }
 }
 .field {
+  margin-bottom: 1rem;
   label {
     display: block;
     font: var(--font-10-n);

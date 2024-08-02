@@ -40,6 +40,13 @@ async function handleSubmit(val: Partial<IUser>) {
     <Dialog v-model:visible="modalsStore.authModal" class="sm auth-dialog" modal :draggable="false" header="Регистрация">
       <auth-form :loading="loading" @submitted="handleSubmit" />
     </Dialog>
+
+    <client-only>
+      <Dialog v-model:visible="modalsStore.locationModal" class="md" modal :draggable="false" header="Выберите тип приема">
+        <delivery-map-widget @submit="modalsStore.closeLocationModal" />
+      </Dialog>
+    </client-only>
+
     <ConfirmDialog class="xsm" />
   </div>
 </template>

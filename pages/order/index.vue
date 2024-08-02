@@ -13,7 +13,7 @@ const $toast = useToastStore();
 
 async function req() {
   try {
-    const res = await $request('/api/delivery/Create', {
+    await $request('/api/delivery/Create', {
       method: 'POST',
       body: orderData.value,
     });

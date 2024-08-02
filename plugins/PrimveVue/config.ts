@@ -35,6 +35,28 @@ export const customPreset = definePreset(Aura, {
 
 export const options: PrimeVueConfiguration = {
   ripple: true,
+
+  pt: {
+    button: {
+      root: {
+        class: 'font-14-n',
+      },
+    },
+    inputtext: {
+      root: {
+        class: 'font-14-n',
+      },
+    },
+
+    dialog: {
+      title: 'font-24-b',
+    },
+    card: {
+      title: 'font-16-b',
+      content: 'font-14-n',
+    },
+  },
+
   theme: {
     preset: customPreset,
     options: {

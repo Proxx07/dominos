@@ -1,9 +1,5 @@
 /* Button */
 .p-button {
-  &-label {
-    font: var(--font-14-n);
-  }
-
   &-secondary{
     --p-button-secondary-background: var(--secondary-500);
     --p-button-secondary-border-color: var(--secondary-500);
@@ -29,7 +25,7 @@
 .p-select {
   --p-select-dropdown-width: 3.5rem;
   &-label {
-    font-size: 1.2rem;
+    font: var(--font-12-n);
     line-height: 1.5;
   }
 }
@@ -98,14 +94,8 @@
     --p-card-shadow: none;
   }
 
-
-  .p-card-title {
-    font: var(--font-16-b);
-  }
-
   .p-card-content {
     color: var(--p-content-color);
-    font: var(--font-14-n);
     &:empty {
       display: none;
     }
@@ -136,7 +126,6 @@
   }
 
   &-title {
-    font: var(--font-24-n);
     color: var(--primary-500);
   }
 }
@@ -157,11 +146,20 @@
   --p-inputnumber-button-width: 3.2rem;
 }
 
-.p-inputtext {
-  font: var(--font-14-n);
+.p-inputtext, .p-inputgroupaddon {
   --p-inputtext-border-color-hover-border-color: var(--primary-100);
   --p-inputtext-border-color-active-border-color: var(--primary-100);
+  &.underlined {
+    --p-inputtext-padding-y: .7rem;
+    --p-inputtext-padding-x: 0rem;
+    --p-inputtext-shadow: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0 !important;
+  }
 }
+
 .p-inputgroupaddon {
   color: var(--accent-text);
 }
