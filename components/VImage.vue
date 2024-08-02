@@ -3,7 +3,7 @@ import { useImage } from '@vueuse/core';
 
 const props = defineProps<{
   src: string
-  width?: number // px
+  size?: number // px
   alt?: string
 }>();
 
@@ -11,7 +11,7 @@ const { isLoading } = useImage({ src: props.src });
 </script>
 
 <template>
-  <div class="image" :style="{ '--width': width ? `${width}px` : '100%' }">
+  <div class="image" :style="{ '--size': size ? `${size}px` : '100%' }">
     <progress-spinner v-if="isLoading" class="spinner" />
     <transition name="fade">
       <img v-if="!isLoading" :src="props.src" :alt="alt ?? 'image'" loading="lazy">
@@ -22,8 +22,8 @@ const { isLoading } = useImage({ src: props.src });
 <style scoped lang="scss">
 .image {
   position: relative;
-  padding-bottom: 100%;
-  width: var(--width);
+  width: var(--size);
+  padding-bottom: var(--size);
   display: flex;
   justify-content: center;
   align-items: center;

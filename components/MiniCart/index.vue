@@ -54,7 +54,7 @@ function orderButtonHandler() {
     </template>
   </Button>
 
-  <Popover ref="miniCart" class="mini-cart">
+  <Popover ref="miniCart">
     <div class="mini-cart__list">
       <transition-group name="slideY">
         <mini-cart-product
@@ -101,7 +101,6 @@ function orderButtonHandler() {
 }
 
 .mini-cart {
-  overflow: hidden;
   &__list {
     display: flex;
     flex-direction: column;

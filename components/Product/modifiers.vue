@@ -36,7 +36,8 @@ const modID = computed({
     <template #option="slotProps">
       <div class="modifiers__item">
         <i class="pi pi-icon" :class="[slotProps.option[optionValue] === modID ? 'pi-check' : 'pi-plus']" />
-        <img v-if="slotProps.option.imageUrl" :src="slotProps.option.imageUrl" width="30">
+        <v-image v-if="slotProps.option.imageUrl" :src="slotProps.option.imageUrl" :size="30" />
+
         {{ slotProps.option[optionLabel] }}
       </div>
     </template>

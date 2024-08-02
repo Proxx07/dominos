@@ -68,7 +68,7 @@ const cartProdAmount = computed<number>({
       {{ product?.name }}
     </div>
 
-    <div class="product__description">
+    <div v-if="thisProduct?.description" class="product__description">
       {{ thisProduct?.description }}
     </div>
 

@@ -90,11 +90,10 @@ const price = computed(() => props.product.price.toLocaleString().replace(',', '
   }
 
   &__details {
-    max-width: 32rem;
+    width: 32rem;
     display: flex;
     flex-direction: column;
     gap: .5rem;
-    width: 100%;
     &-name {
       font: var(--font-14-b);
       color: var(--primary-900);
