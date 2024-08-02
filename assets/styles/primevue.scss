@@ -183,3 +183,18 @@
     text-align: center;
   }
 }
+
+.p-chip.p-component {
+  --p-chip-background: linear-gradient(94deg,  rgba(20, 95, 208, 1) 5%, rgba(1, 158, 229, 1) 90%);
+  color: var(--white);
+  position: relative;
+  &:before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    transform: translate(-3px, -3px);
+    border: 1px solid rgba(20, 95, 208, 1);
+    border-radius: var(--radius-xl);
+  }
+}

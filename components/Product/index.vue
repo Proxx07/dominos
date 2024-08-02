@@ -61,7 +61,7 @@ const cartProdAmount = computed<number>({
     <div class="product__image">
       <v-image v-if="thisProduct.imageUrl" :src="thisProduct.imageUrl" />
 
-      <chip v-once :label="`от ${thisProduct.price} сум`" />
+      <chip v-once :label="`от ${thisProduct.price} сум`" class="image-chip" />
     </div>
 
     <div class="product__name">
@@ -137,6 +137,15 @@ const cartProdAmount = computed<number>({
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  &__image {
+    position: relative;
+    .image-chip {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
 
   &__name {
     font: var(--font-18-b);
