@@ -43,6 +43,10 @@ body {
   will-change: transform, opacity, filter;
 }
 
+main h1 {
+  margin-bottom: 2rem;
+}
+
 a[class] {
   text-decoration: none;
   color: var(--primary-500);

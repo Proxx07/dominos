@@ -21,7 +21,7 @@ const amount = computed({
   },
 });
 
-const price = computed(() => props.product.price.toLocaleString().replace(',', ' '));
+const price = computed(() => props.product.price.toLocaleString().replaceAll(',', ' '));
 </script>
 
 <template>
@@ -73,7 +73,6 @@ const price = computed(() => props.product.price.toLocaleString().replace(',', '
 .cart-product {
   :deep(.p-card-content) {
     display: flex;
-    align-items: center;
     gap: 2rem;
   }
 
@@ -94,6 +93,8 @@ const price = computed(() => props.product.price.toLocaleString().replace(',', '
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    flex-grow: 1;
+
     &-name {
       font: var(--font-14-b);
       color: var(--primary-900);
@@ -112,6 +113,7 @@ const price = computed(() => props.product.price.toLocaleString().replace(',', '
       gap: 1rem;
       width: 100%;
       padding-top: 1rem;
+      margin-top: auto;
     }
 
     &-price {

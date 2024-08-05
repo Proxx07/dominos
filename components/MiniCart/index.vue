@@ -17,7 +17,7 @@ function handleCartClick(event: Event) {
   }
 }
 
-const totalPriceText = computed<string>(() => `${cartStore.totalPrice.toLocaleString().replace(',', ' ')} сум`);
+const totalPriceText = computed<string>(() => `${cartStore.totalPrice.toLocaleString().replaceAll(',', ' ')} сум`);
 
 function productAddHandler(value: ICartItem) {
   cartStore.addToCart(value);

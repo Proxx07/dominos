@@ -4,21 +4,23 @@ import { useDelivery } from '~/composables/useDeliveries';
 
 export function useOrder() {
   const userStore = useUserStore();
-  const cartStore = useCartStore(); // cartList
+  const cartStore = useCartStore();
   const { activeDelivery } = useDelivery();
 
   const { location } = useLocationStorage();
+
+  const paymentType = ref<number>(0);
 
   const orderData = computed<IOrderData>(() => {
     return {
       contactName: userStore.user?.firstName ?? '',
       phone1: userStore.user?.phone1 ?? '',
       ...(userStore.user?.phone2 && { phone2: userStore.user.phone2 }),
-      address: 'test adress', // editable
+      address: '', // editable
       addressComment: '', // editable
       longitude: `${location.value.Longitude}`,
       latitude: `${location.value.Latitude}`,
-      paymentTypeId: 0, // editable
+      paymentTypeId: paymentType.value, // editable
       plannedDateTime: null, // editable
       plannedDateType: 0, // editable
       order: {
@@ -41,5 +43,7 @@ export function useOrder() {
 
   return {
     orderData,
+
+    activeDelivery,
   };
 }

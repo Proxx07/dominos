@@ -55,6 +55,14 @@ export const options: PrimeVueConfiguration = {
       title: 'font-16-b',
       content: 'font-14-n',
     },
+
+    datepicker: {
+      pcInput: {
+        root: {
+          class: 'underlined font-14-n',
+        },
+      },
+    },
   },
 
   theme: {

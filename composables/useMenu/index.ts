@@ -48,7 +48,7 @@ export function useMenu(emit?: IEmits) {
 
   const addressSelectHandle = (address: IMarker) => {
     setAddress(address);
-    markerCenterCoords.value = address.coordinates;
+    markerCenterCoords.value = (location.value.Longitude && location.value.Latitude) ? [location.value.Longitude, location.value.Latitude] : address.coordinates;
   };
 
   const query = computed(() => {
