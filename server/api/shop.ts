@@ -63,6 +63,7 @@ export default defineEventHandler(async (event: H3Event<EventHandlerRequest>) =>
     productsForCart: result?.products ?? [],
     priceOfDelivery: result?.priceOfDelivery ?? 0,
     deliveryDuration: result?.deliveryDuration ?? 0,
+    endTime: result?.endTime ?? 0,
 
     error: result?.error || '',
   };

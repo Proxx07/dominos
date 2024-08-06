@@ -7,7 +7,7 @@ definePageMeta({
 
 const cartStore = useCartStore();
 
-const { orderData } = useOrder();
+const { orderData, headLine, paymentList, activePayment, comment } = useOrder();
 const { $request } = useNuxtApp();
 const $toast = useToastStore();
 
@@ -28,50 +28,64 @@ async function req() {
     $toast.error('Не получилось оформить заказ!', 'не знаю поч ');
   }
 }
-
-async function paymentList() {
-  try {
-    const res = await $request('/api/paytypes/List');
-    console.log(res);
-    // $toast.success('Заказ оформлен!', 'Ура');
-    // cartStore.clearCart();
-  }
-  catch (e: any) {
-    if (e.data.error) {
-      $toast.error('Не получилось список способов оплаты!', e.data.error);
-      return;
-    }
-    $toast.error('Ошибка!', 'Ошибка на сервере');
-  }
-}
-
-const date = ref<any>(new Date());
 </script>
 
 <template>
   <div class="container order-page-wrapper">
     <div class="left-part">
-      <h1>
-        Оформление заказа
-      </h1>
+      <h1> Оформление заказа </h1>
 
-      <Card class="order-card">
-        <template #content>
-          <h3 v-if="false">
-            Ресторан
-          </h3>
+      <div class="page-card">
+        <div class="location-info">
+          <client-only>
+            <h3> {{ headLine }} </h3>
+            <div class="font-16-n">
+              {{ orderData.address }}
+            </div>
+            <template #fallback>
+              <Skeleton width="100%" height="6.9rem" />
+            </template>
+          </client-only>
+        </div>
 
-          <h3>
-            Информация
-          </h3>
+        <h3> Информация </h3>
 
-          <date-picker v-model="date" show-time hour-format="24" date-format="dd/mm/yy" :manual-input="false" />
-        </template>
-      </Card>
+        <div class="fields-wrapper">
+          <div class="field">
+            <input-group>
+              <input-group-addon class="underlined">
+                дата дата
+              </input-group-addon>
+              <Select class="underlined" fluid />
+            </input-group>
+          </div>
 
-      <Button class="order" @click="req">
-        Оформить заказ
-      </Button>
+          <div class="field">
+            <label class="field-title">Ваш комментарий</label>
+            <Textarea v-model="comment" auto-resize fluid />
+          </div>
+        </div>
+
+        <div class="order-price">
+          <client-only fallback="Сумма заказа:">
+            Сумма заказа: {{ cartStore.totalPrice.toLocaleString().replaceAll(',', ' ') }} сум
+          </client-only>
+        </div>
+        <h3> Способ оплаты </h3>
+
+        <Select
+          v-model="activePayment"
+          :options="paymentList"
+          option-label="name"
+          option-value="id"
+          fluid
+        />
+
+        <Button fluid severity="secondary" @click="req">
+          Оформить заказ
+        </Button>
+      </div>
+
       <client-only>
         <pre style="padding-top: 20px;"> {{ orderData }} </pre>
       </client-only>
@@ -103,19 +117,35 @@ const date = ref<any>(new Date());
 </template>
 
 <style scoped lang="scss">
-.order-card {
-  --p-card-body-padding: 2rem;
-  h3 {
-    font: var(--font-24-n);
-    color: var(--accent-text);
-    margin-bottom: 2.4rem;
-  }
+.location-info {
+  margin-bottom: 2rem;
 }
-
 .order-page-wrapper {
   display: grid;
   grid-template-columns: 7fr 5fr;
   gap: 2.4rem;
+}
+
+.fields-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  .field {
+    .field-title {
+      display: block;
+      margin-bottom: .5rem;
+      font: var(--font-12-n);
+      color: var(--accent-text);
+
+    }
+  }
+}
+
+.order-price {
+  text-align: center;
+  font: var(--font-16-n);
+  color: var(--accent-text);
+  padding: 2rem 0;
 }
 
 .right-part {
@@ -128,9 +158,5 @@ const date = ref<any>(new Date());
     flex-direction: column;
     gap: 1.2rem;
   }
-}
-
-.order {
-  font-size: 2rem;
 }
 </style>

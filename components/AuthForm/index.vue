@@ -15,14 +15,14 @@ const {
   step, code, name, sms, isDisabled, phone, customerId,
   phoneError, nameError, codeError, number,
   sendSMS, handleError, smsRequestError,
-  confirmSMS,
+  confirmSMS, loading: isLoading,
 } = useAuth();
 
 const { timer, timerView, setTimer } = useTimer();
 
 const confrmationButtonDisable = computed(() => {
-  if (step.value === 1) return isDisabled.value;
-  return timer.value > 0 || isDisabled.value;
+  if (step.value === 1) return isDisabled.value || isLoading.value;
+  return timer.value > 0 || isDisabled.value || isLoading.value;
 });
 
 async function requestCode() {
@@ -126,7 +126,7 @@ async function submitHandler() {
         class="field button"
         label="Отправить"
         :disabled="confrmationButtonDisable || loading"
-        :loading="loading"
+        :loading="loading || isLoading"
         loading-icon="pi pi-spin pi-spinner-dotted"
         fluid
         @click="submitHandler"

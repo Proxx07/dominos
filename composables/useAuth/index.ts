@@ -21,8 +21,10 @@ export function useAuth() {
   const customerId = ref<string>('');
   const smsRequestError = ref<boolean>(false);
 
+  const loading = ref<boolean>(false);
   const sendSMS = async () => {
     try {
+      loading.value = true;
       const result = await $request<ISmsResponse>('/api/sms/Send', {
         method: 'POST',
         body: {
@@ -42,10 +44,14 @@ export function useAuth() {
         $toast.error('error.title', 'error.server-error');
       }
     }
+    finally {
+      loading.value = false;
+    }
   };
 
   const confirmSMS = async () => {
     try {
+      loading.value = true;
       await $request<ISmsResponse>('/api/sms/Confirm', {
         method: 'POST',
         body: {
@@ -65,6 +71,9 @@ export function useAuth() {
         $toast.error('error.title', 'error.server-error');
       }
     }
+    finally {
+      loading.value = false;
+    }
   };
 
   function handleError() {
@@ -76,7 +85,7 @@ export function useAuth() {
   const isDisabled = computed(() => step.value === 0 ? phoneError.value || nameError.value : sms.value.length < 4);
 
   return {
-    step, customerId,
+    step, customerId, loading,
     code, number, phone, name, sms,
     phoneError, nameError, codeError,
 

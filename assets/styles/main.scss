@@ -43,6 +43,18 @@ body {
   will-change: transform, opacity, filter;
 }
 
+.page-card {
+  padding: 2rem;
+  border-radius: var(--radius-l);
+  background: var(--white);
+  box-shadow: var(--shadow);
+  h3 {
+    font: var(--font-24-n);
+    color: var(--accent-text);
+    margin-bottom: 2.4rem;
+  }
+}
+
 main h1 {
   margin-bottom: 2rem;
 }

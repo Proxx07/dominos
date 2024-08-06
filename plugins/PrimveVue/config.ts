@@ -37,11 +37,13 @@ export const options: PrimeVueConfiguration = {
   ripple: true,
 
   pt: {
+
     button: {
       root: {
         class: 'font-14-n',
       },
     },
+
     inputtext: {
       root: {
         class: 'font-14-n',
@@ -51,6 +53,7 @@ export const options: PrimeVueConfiguration = {
     dialog: {
       title: 'font-24-b',
     },
+
     card: {
       title: 'font-16-b',
       content: 'font-14-n',
@@ -61,6 +64,12 @@ export const options: PrimeVueConfiguration = {
         root: {
           class: 'underlined font-14-n',
         },
+      },
+    },
+
+    textarea: {
+      root: {
+        class: 'underlined font-14-n',
       },
     },
   },

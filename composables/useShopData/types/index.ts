@@ -54,6 +54,7 @@ export interface IMenuResponse {
   orderTypeId: number
   priceOfDelivery: number
   deliveryDuration: number
+  endTime: number
   categories: ICategory[]
   products: IProduct[]
 
@@ -80,6 +81,7 @@ export interface IProcessedResponse {
   productsForCart: IProduct[]
   priceOfDelivery: number
   deliveryDuration: number
+  endTime: number
 
   error?: string
 }

@@ -24,6 +24,13 @@
 /* Select */
 .p-select {
   --p-select-dropdown-width: 3.5rem;
+  &.underlined {
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0 !important;
+    --p-select-shadow: none;
+  }
   &-label {
     font: var(--font-12-n);
     line-height: 1.5;
@@ -153,6 +160,16 @@
     --p-inputtext-padding-y: .7rem;
     --p-inputtext-padding-x: 0rem;
     --p-inputtext-shadow: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0 !important;
+  }
+}
+.p-textarea {
+  &.underlined {
+    --p-textarea-padding-x: 0;
+    --p-textarea-shadow: none;
     border-top: 0;
     border-left: 0;
     border-right: 0;
