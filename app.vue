@@ -3,18 +3,23 @@ import type { LangTypes } from '~/utils/constatns';
 import { useLocationStorage } from '~/composables/useLocationStorage';
 import type { IProcessedResponse } from '~/composables/useShopData/types';
 import { useDelivery } from '~/composables/useDeliveries';
+import {setLocation} from "~/composables/useLocationStorage/models";
 
 const { location, isLocationSaved } = useLocationStorage();
 const { activeDelivery } = useDelivery();
-const locale = useCookie('lang');
+const { locale } = useI18n();
 
 const query = { Language: ln[(locale?.value ?? DEFAULT_LANGUAGE) as LangTypes] };
 const menuStore = useMenuStore();
 
 async function getNewMenu() {
   const data = await $fetch<IProcessedResponse>('/api/shop', { query: { ...query, ...location.value, OrderTypeId: activeDelivery.value } });
-  console.log(data);
-  menuStore.setMenu(data);
+  if (data.error) {
+    location.value = setLocation();
+  }
+  else {
+    menuStore.setMenu(data);
+  }
 }
 ;
 const { data } = await useFetch('/api/shop', { query });

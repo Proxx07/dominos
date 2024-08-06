@@ -2,13 +2,13 @@ import type { IEmits } from './types';
 import { useLocationStorage } from '~/composables/useLocationStorage';
 import { useMapAddresses } from '~/composables/useMapAddresses';
 import { useDelivery } from '~/composables/useDeliveries';
-import type { IMarker } from '~/composables/useLocationStorage/types';
+import type {ILocationData, IMarker} from '~/composables/useLocationStorage/types';
 import type { IProcessedResponse } from '~/composables/useShopData/types';
 
 export function useMenu(emit?: IEmits) {
   const $toast = useToastStore();
   const menuStore = useMenuStore();
-  const { location, addressList, isLocationSaved, setLocationCoords, setLocationFromMarker, pushNewAddress } = useLocationStorage();
+  const { location, addressList, isLocationSaved, setLocationFromMarker, pushNewAddress } = useLocationStorage();
 
   const {
     markerCenterCoords,
@@ -16,13 +16,9 @@ export function useMenu(emit?: IEmits) {
     restMarksList, getRestaurants,
   } = useMapAddresses();
 
-  const { activeDelivery, deliveryList, isDelivery } = useDelivery();
+  const {activeDelivery, deliveryList, isDelivery } = useDelivery();
 
   const loading = ref<boolean>(false);
-
-  const isCorrectDeliveryAddress = computed(() => {
-    return isDelivery.value ? location.value && !location.value.RestaurantId : location.value && location.value.RestaurantId;
-  });
 
   const mapMoveHandler = () => {
     if (!isDelivery.value) return;
@@ -38,10 +34,9 @@ export function useMenu(emit?: IEmits) {
     loading.value = false;
 
     if (address.coordinates.join() === currentMarker.value?.coordinates.join()) return;
-    if (!isDelivery) return;
 
     loading.value = true;
-    setLocationFromMarker({ ...address, id: isDelivery.value ? '' : address.id });
+
     currentMarker.value = address;
     loading.value = false;
   };
@@ -51,12 +46,18 @@ export function useMenu(emit?: IEmits) {
     markerCenterCoords.value = (location.value.Longitude && location.value.Latitude) ? [location.value.Longitude, location.value.Latitude] : address.coordinates;
   };
 
-  const query = computed(() => {
+  const query = computed<ILocationData>(() => {
+    if (!currentMarker.value) return {...location.value};
     return {
-      ...location.value,
-      RestaurantId: isDelivery.value ? '' : location.value.RestaurantId,
-      OrderTypeId: activeDelivery.value,
+      RestaurantId: isDelivery.value ? '' : currentMarker.value.id ,
+      Longitude: currentMarker.value.coordinates[0],
+      Latitude: currentMarker.value.coordinates[1],
+      RegionId: currentMarker.value?.regionID ?? 0,
     };
+  });
+
+  const isCorrectDeliveryAddress = computed(() => {
+    return isDelivery.value ? query.value && !query.value.RestaurantId : query.value && query.value.RestaurantId;
   });
 
   const submitMapHandler = async (): Promise<void> => {
@@ -84,6 +85,10 @@ export function useMenu(emit?: IEmits) {
       pushNewAddress(currentMarker.value);
     }
 
+    if (currentMarker.value) {
+      setLocationFromMarker({...currentMarker.value, id: isDelivery.value ? '' : currentMarker.value.id})
+    }
+
     if (emit) {
       await new Promise(resolve => setTimeout(resolve, 500));
       loading.value = false;
@@ -93,12 +98,12 @@ export function useMenu(emit?: IEmits) {
 
   return {
     location, addressList, isLocationSaved,
-    setLocationCoords, setLocationFromMarker, pushNewAddress,
+    setLocationFromMarker, pushNewAddress,
 
     markerCenterCoords, currentMarker, restMarksList,
     getRestaurants, addressMatchError,
 
-    activeDelivery, isDelivery, deliveryList, addressSelectHandle, setAddress, submitMapHandler,
+    isDelivery, deliveryList, activeDelivery, addressSelectHandle, setAddress, submitMapHandler,
 
     loading, mapMoveHandler,
   };

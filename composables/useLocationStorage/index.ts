@@ -7,11 +7,6 @@ export function useLocationStorage() {
   const location = useLocalStorage<ILocationData>('location', setLocation());
   const addressList = useLocalStorage<IMarker[]>('addresses', []);
 
-  const setLocationCoords = (longLat: [number, number]) => {
-    location.value.Longitude = longLat[0];
-    location.value.Latitude = longLat[1];
-  };
-
   const setLocationFromMarker = (marker: IMarker) => {
     const loc: ILocationData = {
       RestaurantId: marker?.id ?? '',
@@ -38,7 +33,6 @@ export function useLocationStorage() {
 
   return {
     location,
-    setLocationCoords,
     setLocationFromMarker,
 
     isLocationSaved,

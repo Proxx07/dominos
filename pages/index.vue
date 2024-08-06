@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { ICartItem } from '~/composables/useShopData/types';
-import { useLocationStorage } from '~/composables/useLocationStorage';
+import {useLocationStorage} from "~/composables/useLocationStorage";
 
 const menuStore = useMenuStore();
 const modalStore = useLocationModalStore();
 const cartStore = useCartStore();
 const { isLocationSaved } = useLocationStorage();
-
 useSeoMeta({
   title: () => menuStore.folderName,
   description: () => menuStore.folderName,
