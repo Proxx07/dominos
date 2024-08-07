@@ -27,7 +27,7 @@ export function useOrder() {
     },
   });
 
-  const orderData = computed<IOrderData>(() => {
+  const orderData = computed(() => {
     return {
       contactName: userStore.user?.firstName ?? '',
       phone1: userStore.user?.phone1 ?? '',

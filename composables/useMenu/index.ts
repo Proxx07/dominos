@@ -41,10 +41,6 @@ export function useMenu(emit?: IEmits) {
     loading.value = false;
   };
 
-  const addressSelectHandle = (address: IMarker) => {
-    setAddress(address);
-    markerCenterCoords.value = (location.value.Longitude && location.value.Latitude) ? [location.value.Longitude, location.value.Latitude] : address.coordinates;
-  };
 
   const query = computed<ILocationData>(() => {
     if (!currentMarker.value) return {...location.value};
@@ -55,6 +51,11 @@ export function useMenu(emit?: IEmits) {
       RegionId: currentMarker.value?.regionID ?? 0,
     };
   });
+
+  const addressSelectHandle = (address: IMarker) => {
+    setAddress(address);
+    markerCenterCoords.value = (query.value.Longitude && query.value.Latitude) ? [query.value.Longitude, query.value.Latitude] : address.coordinates;
+  };
 
   const isCorrectDeliveryAddress = computed(() => {
     return isDelivery.value ? query.value && !query.value.RestaurantId : query.value && query.value.RestaurantId;

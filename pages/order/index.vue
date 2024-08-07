@@ -6,7 +6,7 @@ definePageMeta({
 });
 
 const cartStore = useCartStore();
-
+const workTimeStore = useWorkTimeStore();
 const { orderData, headLine, paymentList, activePayment, comment } = useOrder();
 const { $request } = useNuxtApp();
 const $toast = useToastStore();
@@ -35,6 +35,9 @@ async function req() {
     <div class="left-part">
       <h1> Оформление заказа </h1>
 
+      <pre>
+        {{workTimeStore.resultList}}
+      </pre>
       <div class="page-card">
         <div class="location-info">
           <client-only>
