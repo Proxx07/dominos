@@ -1,33 +1,16 @@
 <script setup lang="ts">
 import { useOrder } from '~/composables/useOrder';
+import FormField from "~/components/FormField.vue";
 
 definePageMeta({
   middleware: 'order',
 });
 
 const cartStore = useCartStore();
-const workTimeStore = useWorkTimeStore();
-const { orderData, headLine, paymentList, activePayment, comment } = useOrder();
-const { $request } = useNuxtApp();
-const $toast = useToastStore();
 
-async function req() {
-  try {
-    await $request('/api/delivery/Create', {
-      method: 'POST',
-      body: orderData.value,
-    });
-    $toast.success('Заказ оформлен!', 'Ура');
-    cartStore.clearCart();
-  }
-  catch (e: any) {
-    if (e.data.error) {
-      $toast.error('Не получилось оформить заказ!', e.data.error);
-      return;
-    }
-    $toast.error('Не получилось оформить заказ!', 'не знаю поч ');
-  }
-}
+const { orderData, orderDate, headLine, paymentList, activePayment, comment, workTimeStore, postOrder } = useOrder();
+
+
 </script>
 
 <template>
@@ -35,9 +18,6 @@ async function req() {
     <div class="left-part">
       <h1> Оформление заказа </h1>
 
-      <pre>
-        {{workTimeStore.resultList}}
-      </pre>
       <div class="page-card">
         <div class="location-info">
           <client-only>
@@ -54,19 +34,18 @@ async function req() {
         <h3> Информация </h3>
 
         <div class="fields-wrapper">
-          <div class="field">
+          <form-field label="Дата">
             <input-group>
-              <input-group-addon class="underlined">
-                дата дата
+              <input-group-addon class="underlined" style="padding-left: 0;">
+                {{orderDate.day}}
               </input-group-addon>
-              <Select class="underlined" fluid />
+              <Select v-model="orderDate" class="underlined" fluid :options="workTimeStore.resultList" option-label="name"/>
             </input-group>
-          </div>
+          </form-field>
 
-          <div class="field">
-            <label class="field-title">Ваш комментарий</label>
+          <form-field label="Комментарий">
             <Textarea v-model="comment" auto-resize fluid />
-          </div>
+          </form-field>
         </div>
 
         <div class="order-price">
@@ -81,17 +60,14 @@ async function req() {
           :options="paymentList"
           option-label="name"
           option-value="id"
+          class="underlined"
           fluid
         />
 
-        <Button fluid severity="secondary" @click="req">
+        <Button fluid severity="secondary" @click="postOrder" class="order-button">
           Оформить заказ
         </Button>
       </div>
-
-      <client-only>
-        <pre style="padding-top: 20px;"> {{ orderData }} </pre>
-      </client-only>
     </div>
 
     <div class="right-part">
@@ -133,15 +109,15 @@ async function req() {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  .field {
-    .field-title {
-      display: block;
-      margin-bottom: .5rem;
-      font: var(--font-12-n);
-      color: var(--accent-text);
-
-    }
-  }
+  //.field {
+  //  .field-title {
+  //    display: block;
+  //    margin-bottom: .5rem;
+  //    font: var(--font-12-n);
+  //    color: var(--accent-text);
+  //
+  //  }
+  //}
 }
 
 .order-price {
@@ -161,5 +137,9 @@ async function req() {
     flex-direction: column;
     gap: 1.2rem;
   }
+}
+
+.order-button {
+  margin-top: 3rem;
 }
 </style>

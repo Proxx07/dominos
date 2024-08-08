@@ -62,8 +62,7 @@ async function submitHandler() {
           Для просмотра меню в режиме реального времени и в зависимости от местоположения
         </div>
 
-        <div class="field name">
-          <label class="field-title"> Введите ваше имя </label>
+        <form-field label="Имя">
           <input-text
             v-model="name"
             placeholder="Введите ваше имя"
@@ -72,24 +71,23 @@ async function submitHandler() {
             class="underlined"
             @blur="handleError"
           />
-        </div>
+        </form-field>
 
-        <div class="field phone">
-          <label class="field-title"> Телефон </label>
+        <form-field label="Телефон">
           <input-group>
             <input-group-addon class="underlined">
               {{ code }}
             </input-group-addon>
             <input-mask
-              v-model="number"
-              mask="(99) 999-99-99"
-              placeholder="(##) ###-##-##"
-              :invalid="phoneError"
-              class="underlined"
-              @blur="handleError"
+                v-model="number"
+                mask="(99) 999-99-99"
+                placeholder="(##) ###-##-##"
+                :invalid="phoneError"
+                class="underlined"
+                @blur="handleError"
             />
           </input-group>
-        </div>
+        </form-field>
       </div>
     </Transition>
     <Transition name="slideX">
@@ -98,8 +96,7 @@ async function submitHandler() {
           Введите sms код отправленный на номер: {{ phone }}
         </div>
 
-        <div class="field sms">
-          <label class="field-title"> Ваш код </label>
+        <form-field label="Введите код">
           <input-mask
             v-model="sms"
             v-focus
@@ -110,7 +107,7 @@ async function submitHandler() {
             fluid
             @blur="handleError"
           />
-        </div>
+        </form-field>
       </div>
     </Transition>
     <div class="auth__footer">

@@ -1,9 +1,10 @@
-import {getDateIsoString, minutesToClockString} from "~/utils/helpers";
+import { minutesToClockString } from "~/utils/helpers";
+import type {IOrderDate} from "~/composables/useOrder/types";
 
 interface IListDate {
   start: number
   end: number
-  currentDate: string
+  tomorrow: boolean
 }
 
 export const useWorkTimeStore = defineStore('work-time', () => {
@@ -33,21 +34,25 @@ export const useWorkTimeStore = defineStore('work-time', () => {
       const dateObj = {
         start: start % endOfDay,
         end: end % endOfDay,
-        currentDate: result.filter(d => d.end === 0).length ? getDateIsoString(1) : getDateIsoString(),
+        tomorrow: result.filter(d => d.end === 0).length > 0,
       }
 
       result.push(dateObj);
+
       start = end;
     }
 
-    return result;
+    return result.filter(i => i.tomorrow || i.start > currentTimeInMinutes.value);
   });
 
-  const resultList = computed<string[]>(() => {
-    return intervals.value
-      .filter(i => i.start > currentTimeInMinutes.value)
-      .map(i => `${minutesToClockString(i.start)} - ${minutesToClockString(i.end)} / ${i.currentDate}`)
-  })
+  const resultList = computed<IOrderDate[]>(() => {
+    return intervals.value.map(i => {
+      return {
+        name: `${minutesToClockString(i.start)} - ${minutesToClockString(i.end)}`,
+        day: i.tomorrow ? getDateIsoString(1) : getDateIsoString()
+      }
+    })
+  });
 
   return {
     deliveryDuration,

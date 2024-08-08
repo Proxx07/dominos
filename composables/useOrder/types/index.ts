@@ -48,3 +48,8 @@ export interface IOrderData {
   plannedDateType: number
   order: IOrder
 }
+
+export interface IOrderDate {
+  name: string
+  day: string
+}
