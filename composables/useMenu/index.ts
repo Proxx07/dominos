@@ -98,7 +98,7 @@ export function useMenu(emit?: IEmits) {
   };
 
   return {
-    location, addressList, isLocationSaved,
+    location, addressList, isLocationSaved, query,
     setLocationFromMarker, pushNewAddress,
 
     markerCenterCoords, currentMarker, restMarksList,

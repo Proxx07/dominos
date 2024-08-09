@@ -3,7 +3,7 @@ import type { LangTypes } from '~/utils/constatns';
 import { useLocationStorage } from '~/composables/useLocationStorage';
 import type { IProcessedResponse } from '~/composables/useShopData/types';
 import { useDelivery } from '~/composables/useDeliveries';
-import {setLocation} from "~/composables/useLocationStorage/models";
+// import {setLocation} from "~/composables/useLocationStorage/models";
 
 const { location, isLocationSaved } = useLocationStorage();
 const { activeDelivery } = useDelivery();
@@ -14,14 +14,12 @@ const menuStore = useMenuStore();
 
 async function getNewMenu() {
   const data = await $fetch<IProcessedResponse>('/api/shop', { query: { ...query, ...location.value, OrderTypeId: activeDelivery.value } });
-  if (data.error) {
-    location.value = setLocation();
-  }
-  else {
+  if (!data.error) {
+    //location.value = setLocation();
     menuStore.setMenu(data);
   }
 }
-;
+
 const { data } = await useFetch('/api/shop', { query });
 menuStore.setMenu(data?.value as IProcessedResponse);
 

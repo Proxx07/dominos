@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const props = defineProps<{
-  title: string
+  title?: string
   subtitle?: string
   searchPlaceholder?: string
-
+  disableSearch?: boolean
   list: Array<Record<string, any>>
   titleKey: string
   subtitleKey?: string
@@ -23,7 +23,7 @@ const filteredList = computed(() => props.list.filter((item) => {
 </script>
 
 <template>
-  <card class="transparent">
+  <card class="transparent" v-if="title || subtitle">
     <template #title>
       {{ title }}
     </template>
@@ -33,7 +33,7 @@ const filteredList = computed(() => props.list.filter((item) => {
     </template>
   </card>
 
-  <IconField class="search-field">
+  <IconField v-if="!disableSearch" class="search-field">
     <InputText v-model="search" :placeholder="searchPlaceholder" fluid class="font-12-n" />
     <InputIcon v-show="search" class="pi pi-times cursor-pointer" @click="search = ''" />
   </IconField>

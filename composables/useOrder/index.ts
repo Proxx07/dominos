@@ -1,10 +1,9 @@
-import type {IOrderData, IOrderDate} from './types';
+import type { IOrderDate } from './types';
 import { deliveryAddressName, restName } from './models';
 import { useLocationStorage } from '~/composables/useLocationStorage';
 import { useDelivery } from '~/composables/useDeliveries';
 import { useMapAddresses } from '~/composables/useMapAddresses';
 import { usePayment } from '~/composables/usePayment';
-import {getDateIsoString} from "~/utils/helpers";
 
 export function useOrder() {
   const userStore = useUserStore();

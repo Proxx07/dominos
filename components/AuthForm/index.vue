@@ -159,16 +159,6 @@ async function submitHandler() {
     margin-top: auto;
   }
 }
-.field {
-  margin-bottom: 1rem;
-  label {
-    display: block;
-    font: var(--font-10-n);
-    color: var(--accent-text);
-    opacity: 0.8;
-    margin-bottom: .5rem;
-  }
-}
 
 .resend-sms {
   margin-top: auto;

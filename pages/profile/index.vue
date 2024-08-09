@@ -1,9 +1,22 @@
 <script setup lang="ts">
+import {useMenu} from "~/composables/useMenu";
 import {useUser} from '~/composables/useUser';
-import {useLocationStorage} from "~/composables/useLocationStorage";
+import type {IMarker} from "~/composables/useLocationStorage/types";
 
 const {user} = useUser();
-const {addressList} = useLocationStorage();
+const {
+  isDelivery, addressList, restMarksList, submitMapHandler,
+  currentMarker, addressSelectHandle, getRestaurants,
+} = useMenu();
+
+onBeforeMount(() => {
+  getRestaurants();
+});
+
+const addressHandler = async (value: IMarker) => {
+  addressSelectHandle(value);
+  await submitMapHandler();
+}
 </script>
 
 <template>
@@ -29,20 +42,41 @@ const {addressList} = useLocationStorage();
               {{ user.phone1Code }}
             </input-group-addon>
             <input-mask
-                v-model="user.phone1"
-                mask="(99) 999-99-99"
-                placeholder="(##) ###-##-##"
-                class="underlined"
+              v-model="user.phone1"
+              mask="(99) 999-99-99"
+              placeholder="(##) ###-##-##"
+              class="underlined"
             />
           </input-group>
         </form-field>
       </div>
 
       <div class="page-card address">
-        <h3> Адрес доставки </h3>
+
 
         <client-only>
-          {{addressList}}
+          <h3> {{ isDelivery ? 'Адрес доставки' : 'Ресторан для самовывоза' }} </h3>
+          <list-with-search
+            v-if="isDelivery"
+            :list="addressList"
+            :current-item="currentMarker"
+            title-key="title"
+            subtitle-key="address"
+            active-key="title"
+            :disable-search="true"
+            @list-item-clicked="addressHandler"
+          />
+
+          <list-with-search
+            v-else
+            :list="restMarksList"
+            :current-item="currentMarker"
+            title-key="title"
+            subtitle-key="address"
+            active-key="title"
+            :disable-search="true"
+            @list-item-clicked="addressHandler"
+          />
         </client-only>
       </div>
     </div>

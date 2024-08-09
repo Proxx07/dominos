@@ -109,15 +109,6 @@ const { orderData, orderDate, headLine, paymentList, activePayment, comment, wor
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  //.field {
-  //  .field-title {
-  //    display: block;
-  //    margin-bottom: .5rem;
-  //    font: var(--font-12-n);
-  //    color: var(--accent-text);
-  //
-  //  }
-  //}
 }
 
 .order-price {
